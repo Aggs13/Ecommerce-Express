@@ -3,8 +3,11 @@ const path = require("path")
 const app = express()
 
 app.set("view engine", "ejs")
+// Carpeta de views
 app.set("views", path.join(__dirname, "views"));
+// Carpeta de public para Stylos o Imagenes
 app.use(express.static(path.join(__dirname, "public")))
+
 console.log(__dirname);
 
 app.listen(3000,()=>
@@ -12,7 +15,7 @@ app.listen(3000,()=>
 )
 
 
-// Rutas 
+// Rutas  
 app.get("/", (req,res) => {
   res.render("pages/Login.ejs")
 })
