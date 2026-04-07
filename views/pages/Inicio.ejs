@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/inicio.css">
     <title>Inicio</title>
 </head>
 <body>
@@ -11,34 +12,41 @@
     
     <%- include("../partial/categorias") %>
 
-    <section>
-        <div>
-            <p>50% OFF en Combo Plus Canjeando 50.000 puntos MiEcommerce</p>
+    <section class="Promocion">
+        <div class="Publicidad">
+            <p>50% OFF en Combo Plus <br> Canjeando 50.000 puntos <br> MiEcommerce</p>
         </div>
 
-        <div>
-            <p>50% OFF en HBO Max Canjeando 50.000 puntos MiEcommerce</p>
+        <div class="Publicidad">
+            <p>50% OFF en HBO Max <br> Canjeando 50.000 puntos <br> MiEcommerce</p>
         </div>
     </section>
+    
+    <section class="Producto">
+    <h2>Te puede interesar</h2>
 
-    <section>
-        <h2>Te puede interesar</h2>
-        <article>Producto</article>
-        <article>Producto</article>
-        <article>Producto</article>
-        <article>Producto</article>
+        <div class="grid">
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+        </div>
     </section>
+    
+    <section class="Producto">
+    <h2>Los más pedidos</h2>
 
-    <section>
-        <h2>Los más pedidos</h2>
-        <article></article>
-        <article></article>
-        <article></article>
-        <article></article>
-        <article></article>
-        <article></article>
-        <article></article>
-        <article></article>
+        <div class="grid">
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+            <article><a href="">Producto</a></article>
+        </div>
     </section>
+    <%- include("../partial/categorias") %>
 </body>
 </html>

@@ -1,0 +1,73 @@
+
+.Producto {
+  padding: 20px;
+  max-width: 900px;   /* limita el ancho */
+  margin: 0 auto;     /* centra en la pantalla */
+}
+section h2 {
+  margin-bottom: 15px;
+  color: #000000;
+}
+
+
+/* CONTENEDOR GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/*Publicidad*/
+.Promocion {
+  background-color: #1BB7A0;
+  color: #F0F0F0;
+  padding: 20px;
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+ gap: 20px;
+
+}
+
+.Publicidad{
+  flex: 1;              
+  max-width: 390px;     
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+  box-shadow: 0 2px 8px rgba(10,10,10,0.15);
+}
+.Publicidad:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(20,20,20,0.25);
+}
+.Publicidad p{
+  text-decoration: none;
+  color: black;
+}
+
+
+/* CARDS */
+.Producto article {
+  background-color: #fff; 
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+
+  box-shadow: 0 2px 8px rgba(10,10,10,10.15);
+}
+
+.Producto article:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(20,20,20,20.25);
+}
+
+article a {
+  text-decoration: none;
+  color: #000; 
+}
