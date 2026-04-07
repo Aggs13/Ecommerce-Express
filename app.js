@@ -4,6 +4,7 @@ const app = express()
 
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")))
 console.log(__dirname);
 
 app.listen(3000,()=>{
@@ -14,7 +15,6 @@ app.listen(3000,()=>{
 app.get("/", (req,res) => {
   res.render("pages/Login.ejs")
 })
-
 
 app.get("/Registrarse",(req,res) => {
   res.render("pages/Registrar")
