@@ -1,0 +1,48 @@
+.menu {
+  background-color: #3a3a3a;
+  padding: 15px 25px;
+  border-radius: 15px;
+  width: fit-content;
+  margin: 20px auto;
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  position: relative;
+  padding: 0 20px;
+}
+
+.menu li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background-color: #777;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #ccc;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: 0.3s;
+}
+
+.menu a i {
+  font-size: 20px;
+}
+
+.menu a:hover {
+  color: white;
+}
