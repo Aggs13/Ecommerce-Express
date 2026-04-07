@@ -29,7 +29,6 @@ body::before {
   z-index: 0;
 }
 
-/* El logo "MiEcommerce" arriba a la izquierda */
 header {
   position: absolute;
   top: 15px;
@@ -37,7 +36,9 @@ header {
   color: var(--teal-color);
   font-weight: bold;
   font-size: 1.2rem;
-  z-index: 2;
+  z-index: 1;
+  color: #1BB7A0;
+  background-color: #F0F0F0;
 }
 
 form {
@@ -47,7 +48,7 @@ form {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 340px;
   text-align: center;
-  z-index: 1; /* Para que quede encima del fondo verde */
+  z-index: 1;
 }
 
 h1 {
@@ -56,7 +57,7 @@ h1 {
   font-weight: 500;
   color: #222;
   margin-bottom: 30px;
-  text-align: left; /* Alineado a la izquierda como el "¡Hola!" */
+  text-align: left; 
 }
 
 input {
@@ -65,7 +66,7 @@ input {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 25px;
-  box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+  box-sizing: border-box; 
   font-size: 14px;
   outline: none;
 }
