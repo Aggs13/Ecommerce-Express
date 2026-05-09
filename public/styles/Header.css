@@ -1,0 +1,11 @@
+header {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  color: var(--teal-color);
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1;
+  color: #F0F0F0;
+  background-color: #1BB7A0;
+}
