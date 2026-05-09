@@ -21,6 +21,10 @@ app.get("/", (req,res) => {
   res.render("pages/Login.ejs")
 })
 
+app.get("/Carrito",(req,res) => {
+  res.render("pages/Carrito")
+})
+
 app.get("/Registrarse",(req,res) => {
   res.render("pages/Registrar")
 })
