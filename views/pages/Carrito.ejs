@@ -15,10 +15,49 @@
         <a href="/Inicio"><i class="fa-solid fa-arrow-left"></i> volver</a>
         <h2>Productos en tu Carrito</h2>
         <div>
-            <article></article>
-            <article></article>
-            <article></article>
+            <% productos.slice(1,4).forEach(p => { %>
+                <article>
+                    <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                    <p><%= p.nombre %></p>
+                    <h4>$<%= p.precio %></h4>
+
+                    <button>Quitar</button>
+
+                    <button onclick="restar(this)">-</button>
+
+                    <span class="cantidad">1</span>
+
+                    <button onclick="sumar(this)">+</button>
+
+                </article>    
+            <% }) %>
         </div>
+
+                    <script>
+
+                        function sumar(boton) {
+                                    
+                            let article = boton.parentElement;                            
+                            let cantidadSpan = article.querySelector(".cantidad");                            
+                            let cantidad = parseInt(cantidadSpan.textContent);
+                            cantidad++;                           
+                            cantidadSpan.textContent = cantidad;
+                        }
+
+                        function restar(boton) {
+                            let article = boton.parentElement;
+
+                            let cantidadSpan = article.querySelector(".cantidad");
+
+                            let cantidad = parseInt(cantidadSpan.textContent);
+
+                            if (cantidad > 1) {
+                                cantidad--;
+                                cantidadSpan.textContent = cantidad;
+                            }
+                        }
+                    </script>
+
     </section>
 </body>
 </html>

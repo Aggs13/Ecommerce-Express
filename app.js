@@ -22,7 +22,7 @@ app.get("/", (req,res) => {
 })
 
 app.get("/Carrito",(req,res) => {
-  res.render("pages/Carrito")
+  res.render("pages/Carrito",{productos})
 })
 
 app.get("/Registrarse",(req,res) => {
