@@ -1,3 +1,8 @@
+
+/* Solo para login y registro */
+body.auth-page {
+  padding-top: 60px; /* Menos padding porque no hay buscador */
+}
 :root {
   --teal-color: #1bb7a0; /* El verde de la imagen */
   --button-color: #444c50; /* Gris oscuro del botón */
