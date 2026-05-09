@@ -24,7 +24,7 @@ app.get("/", (req,res) => {
 })
 
 app.get("/Carrito",(req,res) => {
-  res.render("pages/Carrito")
+  res.render("pages/Carrito",{carrito})
 })
 
 app.get("/Registrarse",(req,res) => {
@@ -38,8 +38,14 @@ app.get("/Detalles/:id",(req,res) => {
 })
 
 app.get("/inicio", (req, res)=>{
-  res.render("pages/Inicio",{productos,carrito})
+  const numeros = [...Array(productos.length).keys()].sort(() => Math.random() - 0.5).slice(0,4)
+
+  console.log(numeros)
+  res.render("pages/Inicio",{productos,numeros})
 })
+
+
+
 app.get("/inicio", (req, res)=>{
   res.render("pages/Inicio")
 })
