@@ -7,7 +7,8 @@ app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"));
 // Carpeta de public para Stylos o Imagenes
 app.use(express.static(path.join(__dirname, "public")))
-
+// Productos
+const productos = require("./Data/Productos")
 console.log(__dirname);
 
 app.listen(3000,()=>
@@ -24,8 +25,12 @@ app.get("/Registrarse",(req,res) => {
   res.render("pages/Registrar")
 })
 
+app.get("/Detalles",(req,res) => {
+   res.render("pages/Detalle")
+})
+
 app.get("/inicio", (req, res)=>{
-  res.render("pages/Inicio")
+  res.render("pages/Inicio",{productos})
 })
 app.get("/inicio", (req, res)=>{
   res.render("pages/Inicio")
