@@ -7,11 +7,14 @@
   align-items: center;
   padding: 0 40px;
   position: absolute;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  border-bottom: 1px solid #e0e0e0;
-  z-index: 10;
+  top: 15px;
+  left: 20px;
+  color: var(--teal-color);
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1;
+  color: #F0F0F0;
+  background-color: #1BB7A0;
 }
 
 
