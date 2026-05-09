@@ -34,6 +34,18 @@ body::before {
   z-index: 0;
 }
 
+header {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  color: var(--teal-color);
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1;
+  color: #1BB7A0;
+  background-color: #F0F0F0;
+}
+
 form {
   background-color: #ffffff;
   padding: 50px 40px;
