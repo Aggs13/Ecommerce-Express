@@ -7,7 +7,7 @@
     <title>Inicio</title>
 </head>
 <body>
-    <%- include("../partial/header", {titulo:"Login"}) %>
+    <%- include("../partial/header", {titulo:"Login", buscador:true}) %>
     <br>
     
     <%- include("../partial/categorias") %>
@@ -26,25 +26,19 @@
     <h2>Te puede interesar</h2>
 
         <div class="grid">
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
+
+            <% productos.slice(4,8).forEach(p => { %>
+              <article><a href="/Detalles"><%= p.nombre %></a></article>
+            <% }) %>
         </div>
     </section>
     
     <section class="Producto">
     <h2>Los más pedidos</h2>
-
         <div class="grid">
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
-            <article><a href="">Producto</a></article>
+          <% productos.slice(0,8).forEach(p => { %>
+            <article><a href=""><%= p.nombre %></a></article>
+         <% }) %>
         </div>
     </section>
     <%- include("../partial/categorias") %>
