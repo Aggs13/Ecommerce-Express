@@ -1,0 +1,107 @@
+
+section {
+    width: 90%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+section a {
+    text-decoration: none;
+    color: black;
+}
+
+section h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.contenedor-carrito {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+article {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 12px 18px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    gap: 15px;
+
+    transition: 0.3s;
+}
+article:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.3);
+}
+article img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+article p {
+    flex: 1;
+    font-size: 14px;
+}
+
+article h4 {
+    font-size: 28px;
+    margin-right: 20px;
+}
+
+article button {
+    border: none;
+    background: #4d5354;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+article button:hover {
+    opacity: 0.8;
+}
+
+.cantidad {
+    border: 1px solid #999;
+    padding: 4px 14px;
+    border-radius: 20px;
+    background: white;
+    min-width: 20px;
+    text-align: center;
+}
+
+article a {
+    display: flex;
+    align-items: center;
+}
+.contador {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.total {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 32px;
+    margin-right: 20px;
+}
+.boton-pago {
+    border: none;
+    background: #4d5354;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    font-size: 14px;
+}
+.contenedor-pago {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+

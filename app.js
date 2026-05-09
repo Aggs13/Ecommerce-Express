@@ -23,9 +23,6 @@ app.get("/", (req,res) => {
   res.render("pages/Login.ejs")
 })
 
-app.get("/Carrito",(req,res) => {
-  res.render("pages/Carrito",{carrito})
-})
 
 app.get("/Registrarse",(req,res) => {
   res.render("pages/Registrar")
@@ -56,13 +53,63 @@ app.get("/inicio", (req, res)=>{
 app.get("/agregar-carrito/:id",(req,res)=>{
   const idp = req.params.id
   const producto = productos.find(p => p.id == idp)
-  const p =  {
-    id : idp,
-    nombre : producto.nombre,
-    precio : producto.precio,
-    img : producto.linkImg
+  const existe = carrito.find(p => p.id == idp)
+  if(existe){
+    existe.cantidad +=1;
+  }else{
+    const p =  {
+      id : idp,
+      nombre : producto.nombre,
+      precio : producto.precio,
+      img : producto.linkImg,
+      cantidad : 1
+    }
+    carrito.push(p)
   }
-  carrito.push(p)
-  console.log(p)
+  console.log(carrito)
   res.redirect("/Detalles/" + idp)
+})
+
+// Ruta para eliminar del carrito
+app.get("/eliminar-carrito/:id",(req,res)=>{
+  const idp = req.params.id
+  const index = carrito.findIndex(p => p.id == idp)
+  if ( index !==-1) {
+        carrito[index].cantidad--;
+      if(carrito[index].cantidad <= 0){
+        carrito.splice(index,1)
+      }
+    }
+  console.log(carrito)
+  res.redirect("/Carrito")
+})
+//Suamr Carrito
+app.get("/sumar-carrito/:id",(req,res)=>{
+  const idp = req.params.id
+  const producto = productos.find(p => p.id == idp)
+  const existe = carrito.find(p => p.id == idp)
+  if(existe){
+    existe.cantidad +=1;
+  }else{
+    const p =  {
+      id : idp,
+      nombre : producto.nombre,
+      precio : producto.precio,
+      img : producto.linkImg,
+      cantidad : 1
+    }
+    carrito.push(p)
+  }
+  console.log(carrito)
+  res.redirect("/Carrito")
+})
+
+//calcular total
+app.get("/Carrito",(req,res)=>{
+  let total = 0;
+  carrito.forEach(p=> {
+    total += p.precio * p.cantidad
+  })
+
+  res.render("pages/Carrito",{carrito,total})
 })
