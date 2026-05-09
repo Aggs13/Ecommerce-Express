@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/Carrito.css">
     <title>Carrito</title>
 </head>
 <body>
@@ -14,49 +15,34 @@
     <section>
         <a href="/Inicio"><i class="fa-solid fa-arrow-left"></i> volver</a>
         <h2>Productos en tu Carrito</h2>
-        <div>
-            <% productos.slice(1,4).forEach(p => { %>
+        <div class="contenedor-carrito">
+            <% carrito.forEach(p => { %>
                 <article>
-                    <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                    <img src="<%= p.img%>" alt="<%= p.nombre %>" >
                     <p><%= p.nombre %></p>
-                    <h4>$<%= p.precio %></h4>
+                    
 
-                    <button>Quitar</button>
+                    <div class="contador">
+                        <button>Quitar</button>
+                        <a href="/eliminar-carrito/<%= p.id %>">
+                            <button>-</button>
+                        </a>
 
-                    <button onclick="restar(this)">-</button>
-
-                    <span class="cantidad">1</span>
-
-                    <button onclick="sumar(this)">+</button>
-
+                        <span class="cantidad"><%= p.cantidad %></span>
+                        
+                        <a href="/sumar-carrito/<%= p.id %>">
+                            <button>+</button>
+                        </a>
+                        <h4>$<%= p.precio %></h4>
+                    </div>
                 </article>    
             <% }) %>
+            <h2 class="total">Total: $<%= total %></h2>
+            <div class="contenedor-pago">
+                <button class="boton-pago">Ir a Pagar</button>
+            </div>
         </div>
-
-                    <script>
-
-                        function sumar(boton) {
-                                    
-                            let article = boton.parentElement;                            
-                            let cantidadSpan = article.querySelector(".cantidad");                            
-                            let cantidad = parseInt(cantidadSpan.textContent);
-                            cantidad++;                           
-                            cantidadSpan.textContent = cantidad;
-                        }
-
-                        function restar(boton) {
-                            let article = boton.parentElement;
-
-                            let cantidadSpan = article.querySelector(".cantidad");
-
-                            let cantidad = parseInt(cantidadSpan.textContent);
-
-                            if (cantidad > 1) {
-                                cantidad--;
-                                cantidadSpan.textContent = cantidad;
-                            }
-                        }
-                    </script>
+       
 
     </section>
 </body>

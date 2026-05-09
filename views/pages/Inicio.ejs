@@ -44,7 +44,7 @@
     <h2>Los más pedidos</h2>
         <div class="grid">
           <% productos.slice(0,8).forEach(p => { %>
-            <a href="">
+            <a href="/Detalles/<%= p.id %>">
               <article>
                 <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
                 <p><%= p.nombre %></p>
