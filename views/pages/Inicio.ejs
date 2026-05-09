@@ -28,11 +28,11 @@
         <div class="grid">
 
           <% productos.slice(7,11).forEach(p => { %>
-            <a href="/Detalles">
+            <a href="/Detalles/<%= p.id %>">
 
               <article>
                 <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
-                <h4><%= p.nombre %></h4>
+                <p><%= p.nombre %></p>
                 <h4>$<%= p.precio %></h4>
               </article>
             </a>
@@ -44,11 +44,13 @@
     <h2>Los más pedidos</h2>
         <div class="grid">
           <% productos.slice(0,8).forEach(p => { %>
-            <article>
-              <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
-              <a href=""><%= p.nombre %></a>
-              <h4>$<%= p.precio %></h4>
-            </article>
+            <a href="">
+              <article>
+                <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                <p><%= p.nombre %></p>
+                <h4>$<%= p.precio %></h4>
+              </article>
+            </a>
          <% }) %>
         </div>
     </section>
