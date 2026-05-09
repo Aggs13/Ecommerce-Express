@@ -1,4 +1,7 @@
 
+body {
+  padding-top: 80px; /* Para inicio con buscador */
+}
 .Producto {
   padding: 20px;
   max-width: 900px;   /* limita el ancho */
