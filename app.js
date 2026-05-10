@@ -1,6 +1,8 @@
 const express = require("express")
 const path = require("path")
 const app = express()
+const productRoutes = require("./routes/productRoute")
+
 
 app.set("view engine", "ejs")
 // Carpeta de views
@@ -18,6 +20,7 @@ app.listen(3000,()=>
 )
 
 
+app.use(productRoutes)
 // Rutas  
 app.get("/", (req,res) => {
   res.render("pages/Login.ejs")
