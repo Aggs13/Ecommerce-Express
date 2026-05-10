@@ -7,25 +7,30 @@
   <title>Registrarse</title>
 </head>
 <body>
-  <h2>Registrarse</h2>
+  
 
   <%- include("../partial/header", {titulo:"Registrarse", page:"registro"}) %>
-  <form action="/inicio">
+  <form action="/registro" method="POST">
 
     <h1>¡Registrate!</h1>
 
-    <input type="email" placeholder="Tu email">
+    <input type="text" name="nombre" placeholder="Repite tu contraseña">
+    <br>
+    <input type="text" name="apellido" placeholder="Repite tu contraseña">
+    <br>
+
+    <input type="email" name="email" placeholder="Tu email">
     <br>
     
    
-    <input type="password" name="" id="" placeholder="Tu nueva contraseña">
+    <input type="password" name="password" placeholder="Tu nueva contraseña">
     <br>
 
     
-    <input type="password" name="" id="" placeholder="Repite tu contraseña">
+    <input type="password" name="repetirPassword" placeholder="Repite tu contraseña">
     <br>
     <br>
-    <button>Registrarse</button>
+    <button type="submit">Registrarse</button>
     <br>
 
     <p>¿Ya tienes cuenta? <a href="/">Inicia Sesion</a></p>
