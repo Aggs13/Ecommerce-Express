@@ -12,6 +12,8 @@ function obtenerCarritoUsuario(idUsuario) {
   return carrito
 }
 
+
+
 function agregarProducto(idUsuario, idp) {
   const carrito = obtenerCarritoUsuario(idUsuario)
   const producto = productos.find(p => p.idP == idp)
@@ -25,6 +27,8 @@ function agregarProducto(idUsuario, idp) {
     return
   }
 
+  
+
   carrito.productos.push({
     idP: producto.idP,
     nombre: producto.nombre,
@@ -33,6 +37,8 @@ function agregarProducto(idUsuario, idp) {
     cantidad: 1
   })
 }
+
+
 
 function sumarProducto(idUsuario, idp) {
   agregarProducto(idUsuario, idp)
