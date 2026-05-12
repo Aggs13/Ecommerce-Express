@@ -31,7 +31,8 @@ app.get("/Registrarse",(req,res) => {
 app.get("/Detalles/:id",(req,res) => {
   const id = req.params.id
   const producto = productos.find(p => p.id == id)
-  res.render("pages/Detalle", {producto})
+  const productosSugeridos = productos.filter(p => p.id != id).slice(0,4)
+  res.render("pages/Detalle", {producto, productosSugeridos})
 })
 
 app.get("/inicio", (req, res)=>{
