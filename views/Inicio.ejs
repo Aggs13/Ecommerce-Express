@@ -29,10 +29,10 @@
 
           <% numeros.forEach(n => { %>
             <% const p = productos[n] %>
-            <a href="/Detalles/<%= p.id %>">
+            <a href="/Detalles/<%= p.idP %>">
 
               <article>
-                <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                <img src="<%= p.img%>" alt="<%= p.nombre %>" >
                 <p><%= p.nombre %></p>
                 <h4>$<%= p.precio %></h4>
               </article>
@@ -47,7 +47,7 @@
           <% productos.slice(0,8).forEach(p => { %>
             <a href="/Detalles/<%= p.id %>">
               <article>
-                <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                <img src="<%= p.img%>" alt="<%= p.nombre %>" >
                 <p><%= p.nombre %></p>
                 <h4>$<%= p.precio %></h4>
               </article>

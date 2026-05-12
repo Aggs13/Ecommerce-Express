@@ -1,21 +1,21 @@
 const carrito = require("../Data/Carrito")
-const productos = require("../Data/Productos")
+const productos = require("../Data/ProductosData")
 
 
 
 function AgregarProductoCarrito(idp){
 
-  const producto = productos.find(p => p.id == idp)
-  const existe = carrito.find(p => p.id == idp)
+  const producto = productos.find(p => p.idP == idp)
+  const existe = carrito.find(p => p.idP == idp)
 
   if(existe){
     existe.cantidad +=1;
   }else{
     const p =  {
-      id : idp,
+      idP : idp,
       nombre : producto.nombre,
       precio : producto.precio,
-      img : producto.linkImg,
+      img : producto.img,
       cantidad : 1
     }
     carrito.push(p)
@@ -25,13 +25,13 @@ function AgregarProductoCarrito(idp){
 
 function sumarProducto(idp){
 
-  const producto = productos.find(p => p.id == idp)
-  const existe = carrito.find(p => p.id == idp)
+  const producto = productos.find(p => p.idP == idp)
+  const existe = carrito.find(p => p.idP == idp)
   if(existe){
     existe.cantidad +=1;
   }else{
     const p =  {
-      id : idp,
+      idP : idp,
       nombre : producto.nombre,
       precio : producto.precio,
       img : producto.linkImg,
@@ -44,7 +44,7 @@ function sumarProducto(idp){
 
 function restarProducto(idp){
 
-  const index = carrito.findIndex(p => p.id == idp)
+  const index = carrito.findIndex(p => p.idP == idp)
   if ( index !==-1) {
     carrito[index].cantidad--;
     if(carrito[index].cantidad <= 0){

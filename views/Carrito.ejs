@@ -15,19 +15,19 @@
         <div class="contenedor-carrito">
             <% carrito.forEach(p => { %>
                 <article>
-                    <img src="<%= p.img%>" alt="<%= p.nombre %>" >
+                    <img src="<%= p.img %>" alt="<%= p.nombre %>" >
                     <p><%= p.nombre %></p>
                     
 
                     <div class="contador">
                         <button>Quitar</button>
-                        <a href="/restar-carrito/<%= p.id %>">
+                        <a href="/restar-carrito/<%= p.idP %>">
                             <button>-</button>
                         </a>
 
                         <span class="cantidad"><%= p.cantidad %></span>
                         
-                        <a href="/sumar-carrito/<%= p.id %>">
+                        <a href="/sumar-carrito/<%= p.idP %>">
                             <button>+</button>
                         </a>
                         <h4>$<%= p.precio %></h4>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jack Daniels Honey 750ml</title>
+  <title>Detalles</title>
 </head>
 <body>
   <%- include("partials/header", {titulo:"Inicio", page:"inicio"}) %>
@@ -12,9 +12,8 @@
 
   <h1><%= producto.nombre%></h1>
   
-  <p><strong>19.900 puntos</strong></p>
 
-  <img src="<%= producto.linkImg%>" alt="Jack Daniels Honey 750ml" width="400">
+  <img src="<%= producto.img%>" alt="Jack Daniels Honey 750ml" width="400">
 
   <h2>Descripción</h2>
   <p>
@@ -24,7 +23,7 @@
   <p><strong>Categoría:</strong> <%= producto.categoria %></p>
 
   <br>
-  <a href="/agregar-carrito/<%= producto.id %>">
+  <a href="/agregar-carrito/<%= producto.idP %>">
     <button>Agregar al Carrito</button>
   </a>
 

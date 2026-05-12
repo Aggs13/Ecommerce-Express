@@ -1,5 +1,5 @@
 // Funciones CRUD 
-const productos = require("../Data/Productos")
+const productos = require("../Data/ProductosData")
 
 
 function ProductosInicio(){
@@ -8,7 +8,7 @@ function ProductosInicio(){
 }
 
 function getProducto(id){
-  const producto = productos.find(p => p.id == id)
+  const producto = productos.find(p => p.idP == id)
   return producto
 }
 
