@@ -13,6 +13,21 @@
         <a href="/Inicio"><i class="fa-solid fa-arrow-left"></i> volver</a>
         <h2>Productos en tu Carrito</h2>
         <div class="contenedor-carrito">
+
+            <% if(carrito.length == 0){%>
+                <h3>Tu Carrito está vacío</h3>
+                <p>Agrega productos para comenzar tu compra</p>
+
+                <div class="inicio">
+                <a href="/inicio">
+                    <button class="boton-quitar">Volver al Inicio</button>
+                </a>
+                </div>
+
+            <%} else {%>  
+               
+
+
             <% carrito.forEach(p => { %>
                 <article>
                     <img src="<%= p.img%>" alt="<%= p.nombre %>" >
@@ -21,7 +36,7 @@
 
                     <div class="contador">
                         <a href="/sacar-carrito/<%= p.id %>">
-                        <button>Quitar</button>
+                        <button class="boton-quitar">Quitar</button>
                         </a>
                         
                         <a href="/eliminar-carrito/<%= p.id %>">
@@ -42,7 +57,7 @@
                 <button class="boton-pago">Ir a Pagar</button>
             </div>
         </div>
-       
+       <% } %>  
 
     </section>
 </body>

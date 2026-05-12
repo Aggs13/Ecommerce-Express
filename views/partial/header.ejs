@@ -39,12 +39,15 @@
         <div class="user-dropdown">
           <button class="icon-button user-button">
             <div class="user-avatar">O</div>
-            <span class="user-name">Usuario <i class="fas fa-chevron-down"></i></span>
+            <span class="user-name">
+              <%= usuario ? usuario.nombre : "Usuario"%>
+              <i class="fas fa-chevron-down"></i>
+            </span>
           </button>
           
           <ul class="dropdown-menu">
             <li class="dropdown-header">
-              <i class="fas fa-user"></i> Usuario
+              <i class="fas fa-user"><a href="/Usuario"></i> <%= usuario ? usuario.nombre : "Usuario"%></a>
             </li>
             <li><a href="/inicio"><i class="fas fa-home"></i> Inicio</a></li>
             <li><a href="/Carrito"><i class="fas fa-shopping-bag"></i> Mis Compras</a></li>

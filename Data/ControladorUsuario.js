@@ -12,5 +12,14 @@ class ControladorUsuario {
     obtenerUsuarios() {
         return this.usuarios;
     }
+    
+    validarUsuario(email, password) {
+        return this.usuarios.find(
+            u => u.email === email && u.password === password
+        )   
+    }
+
+
+
 }
 module.exports = new ControladorUsuario();

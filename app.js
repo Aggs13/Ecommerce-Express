@@ -1,7 +1,7 @@
 const express = require("express")
 const path = require("path")
 const app = express()
-
+const session = require("express-session");
 
 app.set("view engine", "ejs")
 // Carpeta de views
@@ -20,8 +20,15 @@ app.listen(3000,()=>
 
 //registrar usuario
 const controladorUsuario = require("./Data/ControladorUsuario")
+const UsuarioA = controladorUsuario.agregarUsuario("Enzo", "Llanos", "enzollanos16@gmail.com", "1234")
 
 app.use(express.urlencoded({extended:true}))
+app.use(session({
+    secret: "ecommerceExpressWeb1",
+    resave: false,
+    saveUninitialized: false
+}));
+
 
 app.post("/registro", (req,res) => {
   const nombre = req.body.nombre;
@@ -31,15 +38,44 @@ app.post("/registro", (req,res) => {
   console.log(req.body)
 
   controladorUsuario.agregarUsuario(nombre, apellido, email, password);
+
+  const usuario = controladorUsuario.validarUsuario(email, password);
+
+  req.session.usuario = usuario;
+
   res.redirect("/inicio");
 })
 
+//validar usuario
+app.post("/ValidarUsuario", (req,res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log(req.body)
+  const usuario = controladorUsuario.validarUsuario(email, password);
+
+  if (usuario) {
+    req.session.usuario = usuario;
+    res.redirect("/inicio");
+  } else {
+    res.redirect("/");
+  }
+})
+
+//Pasar nombre de usuario al header
+app.use((req, res, next) => {
+  res.locals.usuario = req.session.usuario;
+  next();
+});
 
 
 
 // Rutas  
 app.get("/", (req,res) => {
   res.render("pages/Login.ejs")
+})
+
+app.get("/Usuario",(req,res) => {
+  res.render("pages/Usuario")
 })
 
 app.use((req, res, next) => {
