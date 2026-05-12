@@ -6,6 +6,6 @@
     <title><%= usuario ? usuario.nombre : "Usuario"%></title>
 </head>
 <body>
-    <%- include("../partial/header", {titulo:"Inicio", page:"inicio"}) %>
+    <%- include("./partials/header", {titulo:"Inicio", page:"inicio",usuario:"usuario"}) %>
 </body>
 </html>

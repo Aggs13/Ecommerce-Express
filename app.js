@@ -2,21 +2,23 @@ const express = require("express")
 const path = require("path")
 const app = express()
 const session = require("express-session");
-
 app.set("view engine", "ejs")
+const productosRoute = require("./routes/productRoute")
+
 // Carpeta de views
 app.set("views", path.join(__dirname, "views"));
+
 // Carpeta de public para Stylos o Imagenes
 app.use(express.static(path.join(__dirname, "public")))
-// Productos
-const productos = require("./Data/Productos")
-// Carrito
-const {Carrito, listaCarritos} = require("./Data/Carrito") 
-console.log(__dirname);
 
 app.listen(3000,()=>
   console.log("Servidor en http://localhost:3000/")
 )
+
+app.use(productosRoute)
+
+const {Carrito, listaCarritos} = require("./Data/Carrito") 
+console.log(__dirname);
 
 //registrar usuario
 const controladorUsuario = require("./Data/ControladorUsuario")
@@ -69,6 +71,18 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
+app.get("/Usuario",(req,res) => {
+  res.render("Usuario")
+})
+
+app.use((req, res, next) => {
+   if(!req.session.usuario){
+    res.locals.cantidadCarrito = 0;
+    return next();
+  }
+
 function obtenerCarritoUsuario(req) {
    let carrito = listaCarritos.find(c => c.idUsuario == req.session.usuario.id);
   if(!carrito){
@@ -77,21 +91,6 @@ function obtenerCarritoUsuario(req) {
   }
   return carrito;
 }
-
-// Rutas  
-app.get("/", (req,res) => {
-  res.render("pages/Login.ejs")
-})
-
-app.get("/Usuario",(req,res) => {
-  res.render("pages/Usuario")
-})
-
-app.use((req, res, next) => {
-   if(!req.session.usuario){
-    res.locals.cantidadCarrito = 0;
-    return next();
-  }
 
   const carrito = obtenerCarritoUsuario(req);
 
@@ -105,97 +104,23 @@ app.use((req, res, next) => {
 
   next();
 });
-
-app.get("/Registrarse",(req,res) => {
-  res.render("pages/Registrar")
+// Rutas Auth 
+app.get("/", (req,res) => {
+  res.render("Login")
 })
 
-app.get("/Detalles/:id",(req,res) => {
-  const id = req.params.id
-  const producto = productos.find(p => p.id == id)
-  res.render("pages/Detalle", {producto})
+app.get("/Registrarse",(req,res) => {
+  res.render("Registrar")
 })
 
 app.get("/inicio", (req, res)=>{
   const numeros = [...Array(productos.length).keys()].sort(() => Math.random() - 0.5).slice(0,4)
 
   console.log(numeros)
-  res.render("pages/Inicio",{productos,numeros})
+  res.render("Inicio",{productos,numeros})
 })
 
 
-
-app.get("/inicio", (req, res)=>{
-  res.render("pages/Inicio")
-})
-
-
-
-
-// Ruta para agregar al carrito
-app.get("/agregar-carrito/:id",(req,res)=>{
-   const carrito = obtenerCarritoUsuario(req);
-
-  const idp = req.params.id;
-
-  const producto = productos.find(p => p.id == idp);
-
-  const existe = carrito.productos.find(p => p.id == idp);
-
-  if(existe){
-
-    existe.cantidad +=1;
-
-  }else{
-
-    carrito.productos.push({
-      id : idp,
-      nombre : producto.nombre,
-      precio : producto.precio,
-      img : producto.linkImg,
-      cantidad : 1
-    });
-
-  }
-
-  res.redirect("/Detalles/" + idp);
-})
-
-// Ruta para eliminar del carrito
-app.get("/eliminar-carrito/:id",(req,res)=>{
-   const carrito = obtenerCarritoUsuario(req);
-  const idp = req.params.id
-  const index = carrito.productos.findIndex(p => p.id == idp)
-  if ( index !==-1) {
-        carrito.productos[index].cantidad--;
-      if(carrito.productos[index].cantidad <= 0){
-        carrito.productos.splice(index,1)
-      }
-    }
-  console.log(carrito)
-  res.redirect("/Carrito")
-})
-//Suamr Carrito
-app.get("/sumar-carrito/:id",(req,res)=>{
-  const carrito = obtenerCarritoUsuario(req);
-  const idp = req.params.id
-  const producto = productos.find(p => p.id == idp)
-  const existe = carrito.productos.find(p => p.id == idp)
-  if(existe){
-    existe.cantidad +=1;
-  }else{
-    const p =  {
-      id : idp,
-      nombre : producto.nombre,
-      precio : producto.precio,
-      img : producto.linkImg,
-      cantidad : 1
-    }
-   carrito.productos.push(p)
-  }
-  console.log(carrito)
-  res.redirect("/Carrito")
-})
 
 // sacar del carrito
   app.get("/sacar-carrito/:id",(req,res)=>{
@@ -210,24 +135,6 @@ app.get("/sumar-carrito/:id",(req,res)=>{
 
   })
 
-
-//calcular total
-app.get("/Carrito",(req,res)=>{
-
-  const carrito = obtenerCarritoUsuario(req);
-
-  let total = 0;
-
-  carrito.productos.forEach(p=> {
-    total += p.precio * p.cantidad
-  });
-
-  res.render("pages/Carrito",{
-    carrito : carrito.productos,
-    total
-  });
-
-});
 
 app.use((req, res) => {
     res.status(404).send("Error 404 - Página no encontrada");

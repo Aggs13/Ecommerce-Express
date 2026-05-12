@@ -7,7 +7,7 @@
     <title>Carrito</title>
 </head>
 <body>
-    <%- include("../partial/header", {titulo:"Inicio", page:"inicio"}) %>
+    <%- include("./partials/header", {titulo:"Inicio", page:"inicio",usuario:"usuario"}) %>
     
     <section>
         <a href="/Inicio"><i class="fa-solid fa-arrow-left"></i> volver</a>
@@ -30,22 +30,22 @@
 
             <% carrito.forEach(p => { %>
                 <article>
-                    <img src="<%= p.img%>" alt="<%= p.nombre %>" >
+                    <img src="<%= p.img %>" alt="<%= p.nombre %>" >
                     <p><%= p.nombre %></p>
                     
 
                     <div class="contador">
-                        <a href="/sacar-carrito/<%= p.id %>">
+                        <a href="/sacar-carrito/<%= p.idP %>">
                         <button class="boton-quitar">Quitar</button>
                         </a>
                         
-                        <a href="/eliminar-carrito/<%= p.id %>">
+                        <a href="/eliminar-carrito/<%= p.idP %>">
                             <button>-</button>
                         </a>
 
                         <span class="cantidad"><%= p.cantidad %></span>
                         
-                        <a href="/sumar-carrito/<%= p.id %>">
+                        <a href="/sumar-carrito/<%= p.idP %>">
                             <button>+</button>
                         </a>
                         <h4>$<%= p.precio %></h4>

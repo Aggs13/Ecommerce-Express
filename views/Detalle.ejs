@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles</title>
+</head>
+<body>
+  <%- include("./partials/header", {titulo:"Inicio", page:"inicio", usuario:"usuario"}) %>
+  
+  <a href="/inicio">← Volver al Inicio</a>
+
+  <h1><%= producto.nombre%></h1>
+  
+
+  <img src="<%= producto.img%>" alt="Jack Daniels Honey 750ml" width="400">
+
+  <h2>Descripción</h2>
+  <p>
+    <%=producto.descripcion%>
+  </p>
+
+  <p><strong>Categoría:</strong> <%= producto.categoria %></p>
+
+  <br>
+  <a href="/agregar-carrito/<%= producto.idP %>">
+    <button>Agregar al Carrito</button>
+  </a>
+
+</body>
+</html>

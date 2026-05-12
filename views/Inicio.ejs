@@ -7,10 +7,10 @@
     <title>Inicio</title>
 </head>
 <body>
-    <%- include("../partial/header", {titulo:"Inicio", page:"inicio"}) %>
+    <%- include("./partials/header", {titulo:"Inicio", page:"inicio",usuario:"usuario"}) %>
     <br>
     
-    <%- include("../partial/categorias") %>
+    <%- include("partials/categorias") %>
 
     <section class="Promocion">
         <div class="Publicidad">
@@ -29,10 +29,10 @@
 
           <% numeros.forEach(n => { %>
             <% const p = productos[n] %>
-            <a href="/Detalles/<%= p.id %>">
+            <a href="/Detalles/<%= p.idP %>">
 
               <article>
-                <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                <img src="<%= p.img%>" alt="<%= p.nombre %>" >
                 <p><%= p.nombre %></p>
                 <h4>$<%= p.precio %></h4>
               </article>
@@ -45,9 +45,9 @@
     <h2>Los más pedidos</h2>
         <div class="grid">
           <% productos.slice(0,8).forEach(p => { %>
-            <a href="/Detalles/<%= p.id %>">
+            <a href="/Detalles/<%= p.idP %>">
               <article>
-                <img src="<%= p.linkImg%>" alt="<%= p.nombre %>" >
+                <img src="<%= p.img%>" alt="<%= p.nombre %>" >
                 <p><%= p.nombre %></p>
                 <h4>$<%= p.precio %></h4>
               </article>
@@ -55,6 +55,6 @@
          <% }) %>
         </div>
     </section>
-    <%- include("../partial/categorias") %>
+    <%- include("partials/categorias") %>
 </body>
 </html>
