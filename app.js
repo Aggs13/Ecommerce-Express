@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, "public")))
 // Productos
 const productos = require("./Data/Productos")
 // Carrito
-const carrito = require("./Data/Carrito") 
+const {Carrito, listaCarritos} = require("./Data/Carrito") 
 console.log(__dirname);
 
 app.listen(3000,()=>
@@ -40,11 +40,13 @@ app.post("/registro", (req,res) => {
   controladorUsuario.agregarUsuario(nombre, apellido, email, password);
 
   const usuario = controladorUsuario.validarUsuario(email, password);
-
+  const nuevoCarrito = new Carrito(usuario.id);
+  listaCarritos.push(nuevoCarrito);
   req.session.usuario = usuario;
 
   res.redirect("/inicio");
 })
+
 
 //validar usuario
 app.post("/ValidarUsuario", (req,res) => {
@@ -67,7 +69,14 @@ app.use((req, res, next) => {
   next();
 });
 
-
+function obtenerCarritoUsuario(req) {
+   let carrito = listaCarritos.find(c => c.idUsuario == req.session.usuario.id);
+  if(!carrito){
+    carrito = new Carrito(req.session.usuario.id);
+    listaCarritos.push(carrito);
+  }
+  return carrito;
+}
 
 // Rutas  
 app.get("/", (req,res) => {
@@ -79,11 +88,21 @@ app.get("/Usuario",(req,res) => {
 })
 
 app.use((req, res, next) => {
+   if(!req.session.usuario){
+    res.locals.cantidadCarrito = 0;
+    return next();
+  }
+
+  const carrito = obtenerCarritoUsuario(req);
+
   let cantidadCarrito = 0;
-  carrito.forEach(p => {
+
+  carrito.productos.forEach(p => {
     cantidadCarrito += p.cantidad;
   });
+
   res.locals.cantidadCarrito = cantidadCarrito;
+
   next();
 });
 
@@ -115,33 +134,42 @@ app.get("/inicio", (req, res)=>{
 
 // Ruta para agregar al carrito
 app.get("/agregar-carrito/:id",(req,res)=>{
-  const idp = req.params.id
-  const producto = productos.find(p => p.id == idp)
-  const existe = carrito.find(p => p.id == idp)
+   const carrito = obtenerCarritoUsuario(req);
+
+  const idp = req.params.id;
+
+  const producto = productos.find(p => p.id == idp);
+
+  const existe = carrito.productos.find(p => p.id == idp);
+
   if(existe){
+
     existe.cantidad +=1;
+
   }else{
-    const p =  {
+
+    carrito.productos.push({
       id : idp,
       nombre : producto.nombre,
       precio : producto.precio,
       img : producto.linkImg,
       cantidad : 1
-    }
-    carrito.push(p)
+    });
+
   }
-  console.log(carrito)
-  res.redirect("/Detalles/" + idp)
+
+  res.redirect("/Detalles/" + idp);
 })
 
 // Ruta para eliminar del carrito
 app.get("/eliminar-carrito/:id",(req,res)=>{
+   const carrito = obtenerCarritoUsuario(req);
   const idp = req.params.id
-  const index = carrito.findIndex(p => p.id == idp)
+  const index = carrito.productos.findIndex(p => p.id == idp)
   if ( index !==-1) {
-        carrito[index].cantidad--;
-      if(carrito[index].cantidad <= 0){
-        carrito.splice(index,1)
+        carrito.productos[index].cantidad--;
+      if(carrito.productos[index].cantidad <= 0){
+        carrito.productos.splice(index,1)
       }
     }
   console.log(carrito)
@@ -149,9 +177,10 @@ app.get("/eliminar-carrito/:id",(req,res)=>{
 })
 //Suamr Carrito
 app.get("/sumar-carrito/:id",(req,res)=>{
+  const carrito = obtenerCarritoUsuario(req);
   const idp = req.params.id
   const producto = productos.find(p => p.id == idp)
-  const existe = carrito.find(p => p.id == idp)
+  const existe = carrito.productos.find(p => p.id == idp)
   if(existe){
     existe.cantidad +=1;
   }else{
@@ -162,7 +191,7 @@ app.get("/sumar-carrito/:id",(req,res)=>{
       img : producto.linkImg,
       cantidad : 1
     }
-    carrito.push(p)
+   carrito.productos.push(p)
   }
   console.log(carrito)
   res.redirect("/Carrito")
@@ -170,12 +199,13 @@ app.get("/sumar-carrito/:id",(req,res)=>{
 
 // sacar del carrito
   app.get("/sacar-carrito/:id",(req,res)=>{
+    const carrito = obtenerCarritoUsuario(req);
     const idp = req.params.id;
-    const index = carrito.findIndex(p => p.id == idp);
+    const index = carrito.productos.findIndex(p => p.id == idp);
     if (index !== -1) {
-        carrito.splice(index, 1);
+        carrito.productos.splice(index, 1);
     }
-    console.log(carrito);
+    console.log(carrito.productos);
     res.redirect("/Carrito");
 
   })
@@ -183,13 +213,21 @@ app.get("/sumar-carrito/:id",(req,res)=>{
 
 //calcular total
 app.get("/Carrito",(req,res)=>{
-  let total = 0;
-  carrito.forEach(p=> {
-    total += p.precio * p.cantidad
-  })
 
-  res.render("pages/Carrito",{carrito,total})
-})
+  const carrito = obtenerCarritoUsuario(req);
+
+  let total = 0;
+
+  carrito.productos.forEach(p=> {
+    total += p.precio * p.cantidad
+  });
+
+  res.render("pages/Carrito",{
+    carrito : carrito.productos,
+    total
+  });
+
+});
 
 app.use((req, res) => {
     res.status(404).send("Error 404 - Página no encontrada");
