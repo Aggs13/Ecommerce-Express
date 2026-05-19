@@ -67,12 +67,11 @@ function mostrarPorCategoria(req,res){
   const resultado = producModel.ProductosInicio()
   const productos = resultado.productos.filter(p => p.categoria.toLowerCase().includes(categoria))
 
-  res.render("Busqueda", {
+  res.render("Productos", {
     titulo: "Busqueda",
     page: "inicio",
     style: "/styles/inicio.css",
-    productos,
-    busqueda : categoria
+    productos
   })
 }
 
