@@ -1,51 +1,53 @@
-
 <section class="Producto">
     <h2>Productos</h2>
 
     <div class="orden-productos">
         <% if (typeof orden === "undefined" || !orden) { %>
-            <a href="/Productos?orden=asc">
+            <a href="/Productos?orden=asc<%= categoria ? '&categoria=' + encodeURIComponent(categoria) : '' %>">
                 <button type="button">Ordenar asc <i class="fa-solid fa-angles-up"></i></button>
             </a>
-            <a href="/Productos?orden=desc">
+            <a href="/Productos?orden=desc<%= categoria ? '&categoria=' + encodeURIComponent(categoria) : '' %>">
                 <button type="button">Ordenar des <i class="fa-solid fa-angles-down"></i></button>
             </a>
         <% } else if (orden === "asc") { %>
-            <a href="/Productos?orden=desc">
+            <a href="/Productos?orden=desc<%= categoria ? '&categoria=' + encodeURIComponent(categoria) : '' %>">
                 <button type="button">Ordenar des <i class="fa-solid fa-angles-down"></i></button>
             </a>
-            <a href="/Productos">
+            <a href="/Productos<%= categoria ? '?categoria=' + encodeURIComponent(categoria) : '' %>">
                 <button type="button">Borra Filtro <i class="fa-solid fa-angle-left"></i></button>
             </a>
         <% } else if (orden === "desc") { %>
-            <a href="/Productos?orden=asc">
+            <a href="/Productos?orden=asc<%= categoria ? '&categoria=' + encodeURIComponent(categoria) : '' %>">
                 <button type="button">Ordenar asc <i class="fa-solid fa-angles-up"></i></button>
             </a>
-
-            <a href="/Productos">
+            <a href="/Productos<%= categoria ? '?categoria=' + encodeURIComponent(categoria) : '' %>">
                 <button type="button">Borra Filtro <i class="fa-solid fa-angle-left"></i></button>
             </a>
         <% } %>
-        <form action="/Categorias" method="GET">
+
+        <form action="/Productos" method="GET">
+            <% if (typeof orden !== "undefined" && orden) { %>
+                <input type="hidden" name="orden" value="<%= orden %>">
+            <% } %>
 
             <select name="categoria">
-            <option value="">Todos</option>
-            <option value="Snack Salado">Snack Salado</option>
-            <option value="Chocolate">Chocolate</option>
-            <option value="Galletas">Galletas</option>
-            <option value="Bebida">Bebida</option>
+                <option value="" <%= !categoria ? "selected" : "" %>>Todos</option>
+                <option value="Snack Salado" <%= categoria === "Snack Salado" ? "selected" : "" %>>Snack Salado</option>
+                <option value="Chocolate" <%= categoria === "Chocolate" ? "selected" : "" %>>Chocolate</option>
+                <option value="Galletas" <%= categoria === "Galletas" ? "selected" : "" %>>Galletas</option>
+                <option value="Bebida" <%= categoria === "Bebida" ? "selected" : "" %>>Bebida</option>
             </select>
 
-        <button type="submit">Buscar</button>
-      </form>
+            <button type="submit">Buscar</button>
+        </form>
     </div>
 
     <div class="grid">
-        <% if(productos.length == 0){ %>
+        <% if (productos.length == 0) { %>
             <p>No hay productos disponibles</p>
-        <%}else{%>
+        <% } else { %>
             <% productos.forEach(p => { %>
-                <a href="/Detalles/<%= p.idP%>">
+                <a href="/Detalles/<%= p.idP %>">
                     <article>
                         <img src="<%= p.img %>" alt="<%= p.nombre %>">
                         <p><%= p.nombre %></p>
@@ -53,6 +55,6 @@
                     </article>
                 </a>
             <% }) %>
-        <%}%>
+        <% } %>
     </div>
 </section>

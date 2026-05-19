@@ -42,7 +42,12 @@ function buscarProductos(req, res){
 function mostrarTodosProductos(req, res) {
   const resultado = producModel.ProductosInicio()
   const orden = req.query.orden
+  const categoria = req.query.categoria || ""
   let productos = [...resultado.productos]
+
+  if (categoria) {
+    productos = productos.filter(p => p.categoria.toLowerCase().includes(categoria.toLowerCase()))
+  }
 
   if (orden === "asc") {
     productos.sort((a, b) => a.precio - b.precio)
@@ -57,23 +62,14 @@ function mostrarTodosProductos(req, res) {
     page: "inicio",
     style: "/styles/inicio.css",
     productos,
-    orden
+    orden,
+    categoria
   })
 }
 
 
 function mostrarPorCategoria(req,res){
-  const categoria = req.query.categoria ? req.query.categoria.toLowerCase() : ""
-
-  const resultado = producModel.ProductosInicio()
-  const productos = resultado.productos.filter(p => p.categoria.toLowerCase().includes(categoria))
-
-  res.render("Productos", {
-    titulo: "Busqueda",
-    page: "inicio",
-    style: "/styles/inicio.css",
-    productos
-  })
+  mostrarTodosProductos(req, res)
 }
 
 module.exports = {
