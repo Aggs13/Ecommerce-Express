@@ -35,19 +35,21 @@
                     
 
                     <div class="contador">
-                        <a href="/sacar-carrito/<%= p.idP %>">
-                        <button class="boton-quitar">Quitar</button>
-                        </a>
+                        <form action="/sacar-carrito/<%= p.idP %>" method="POST">
+                            <button type="submit" class="boton-quitar">Quitar</button>
+                        </form>
+
                         
-                        <a href="/restar-carrito/<%= p.idP %>">
-                            <button>-</button>
-                        </a>
+                        <form action="/restar-carrito/<%= p.idP %>" method="POST">
+                            <button type="submit">-</button>
+                        </form>
 
                         <span class="cantidad"><%= p.cantidad %></span>
                         
-                        <a href="/sumar-carrito/<%= p.idP %>">
-                            <button>+</button>
-                        </a>
+                        <form action="/sumar-carrito/<%= p.idP %>" method="POST">
+                            <button type="submit">+</button>
+                        </form>
+                        
                         <h4>$<%= p.precio %></h4>
                     </div>
                 </article>    
