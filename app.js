@@ -1,6 +1,7 @@
 const express = require("express")
 const path = require("path")
 const session = require("express-session")
+const expressLayouts = require("express-ejs-layouts")
 
 const productosRoute = require("./routes/productRoute")
 const carritoRoute = require("./routes/carritoRoute")
@@ -11,6 +12,8 @@ const app = express()
 
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
+app.use(expressLayouts)
+app.set("layout", "layouts/main")
 
 app.use(express.static(path.join(__dirname, "public")))
 app.use(express.urlencoded({ extended: true }))
@@ -51,11 +54,11 @@ app.use((req, res, next) => {
 })
 
 app.get("/", (req, res) => {
-  res.render("Login")
+  res.render("Login", { layout: false })
 })
 
 app.get("/Registrarse", (req, res) => {
-  res.render("Registrar")
+  res.render("Registrar", { layout: false })
 })
 
 app.post("/registro", (req, res) => {
@@ -85,7 +88,10 @@ app.post("/ValidarUsuario", (req, res) => {
 })
 
 app.get("/Usuario", (req, res) => {
-  res.render("Usuario")
+  res.render("Usuario", {
+    titulo: req.session.usuario ? req.session.usuario.nombre : "Usuario",
+    page: "inicio"
+  })
 })
 
 

@@ -38,6 +38,9 @@ function RenderCarritoTotal(req, res) {
   const { carrito, total } = carritoModel.calcularTotal(req.session.usuario.id)
 
   res.render("Carrito", {
+    titulo: "Carrito",
+    page: "inicio",
+    style: "/styles/Carrito.css",
     carrito,
     total
   })
@@ -46,7 +49,11 @@ function RenderCarritoTotal(req, res) {
 function RenderCheckout(req, res) {
   if (!validarSesion(req, res)) return
 
-  res.render("Checkout")
+  res.render("Checkout", {
+    titulo: "Checkout",
+    page: "inicio",
+    style: "/styles/Carrito.css"
+  })
 }
 
 module.exports = {

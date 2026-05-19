@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/Header.css">
+  <link rel="stylesheet" href="/styles/Footer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <% if (typeof style !== "undefined") { %>
+    <link rel="stylesheet" href="<%= style %>">
+  <% } %>
+  <title><%= typeof titulo !== "undefined" ? titulo : "Mi Ecommerce" %></title>
+</head>
+<body>
+  <%- include("../partials/header", {
+    titulo: typeof titulo !== "undefined" ? titulo : "Mi Ecommerce",
+    page: typeof page !== "undefined" ? page : ""
+  }) %>
+
+  <main>
+    <%- body %>
+  </main>
+
+  <%- include("../partials/footer") %>
+</body>
+</html>
