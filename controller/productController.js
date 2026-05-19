@@ -14,12 +14,13 @@ function mostrarProductosIncio(req,res){
 
 
 function productoDetalles(req,res){
-  const producto = producModel.getProducto(req.params.id)
+  const respuesta = producModel.getProducto(req.params.id)
   res.render("Detalle",{
-    titulo: producto.nombre,
+    titulo: respuesta.producto.nombre,
     page: "inicio",
     style: "/styles/Detalle.css",
-    producto
+    producto : respuesta.producto,
+    productosRelacionados : respuesta.productosRelacionados
   })
 }
 

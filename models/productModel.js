@@ -9,7 +9,9 @@ function ProductosInicio(){
 
 function getProducto(id){
   const producto = productos.find(p => p.idP == id)
-  return producto
+  const productosRelacionados = productos.filter(p => p.categoria == producto.categoria && p.idP != producto.idP)
+
+  return {producto,productosRelacionados}
 }
 
 function filtrarCategoria(categoria){

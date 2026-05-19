@@ -19,5 +19,27 @@
       </form>
     </div>
   </section>
+
+  
+<section class="Producto">
+<h2>Te puede interesar</h2>
+
+    <div class="grid">
+
+      <% productosRelacionados.forEach(p => { %>
+      <a href="/Detalles/<%= p.idP %>">
+
+      <article>
+        <img src="<%= p.img %>" alt="<%= p.nombre %>">
+        <p><%= p.nombre %></p>
+        <h4>$<%= p.precio %></h4>
+      </article>
+    </a>
+
+<% }) %>
+    </div>
+</section>
+
+
 </section>
 <%- include("./partials/categorias") %>
