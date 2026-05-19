@@ -1,19 +1,39 @@
-<section class="detalle">
-  <a class="volver" href="/inicio">Volver al Inicio</a>
-  <section class="detalle-card">
-    <div class="detalle-imagen">
-      <img src="<%= producto.img %>" alt="<%= producto.nombre %>">
-    </div>
-    <div class="detalle-info">
-      <h1><%= producto.nombre %></h1>
-      <p class="puntos"><strong>19.900 puntos</strong></p>
-      <h2>Descripcion</h2>
-      <p><%= producto.descripcion %></p>
-      <p><strong>Categoria:</strong> <%= producto.categoria %></p>
-      <a href="/agregar-carrito/<%= producto.idP %>">
-        <button>Agregar al Carrito</button>
-      </a>
-    </div>
-  </section>
-</section>
-<%- include("./partials/categorias") %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/Detalle.css">
+  <title><%= producto.nombre %></title>
+</head>
+<body>
+  <%- include("./partials/header", {titulo:"Inicio", page:"inicio"}) %>
+  <main class="detalle">
+    <a class="volver" href="/inicio">Volver al Inicio</a>
+    <section class="detalle-card">
+
+      <div class="detalle-imagen">
+        <img src="<%= producto.img %>" alt="<%= producto.nombre %>">
+      </div>
+
+      <div class="detalle-info">
+
+        <h1><%= producto.nombre %></h1>
+        <p class="puntos"><strong>19.900 puntos</strong></p>
+
+        <h2>Descripcion</h2>
+        <p><%= producto.descripcion %></p>
+
+        <p><strong>Categoria:</strong> <%= producto.categoria %></p>
+
+        <form action="/agregar-carrito/<%= producto.idP %>" method="POST">
+          <button type="submit">Agregar al Carrito</button>
+        </form>
+
+      </div>
+
+    </section>
+  </main>
+  <%- include("./partials/categorias") %>
+</body>
+</html>
