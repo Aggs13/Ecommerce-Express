@@ -61,6 +61,21 @@ function mostrarTodosProductos(req, res) {
 }
 
 
+function mostrarPorCategoria(req,res){
+  const categoria = req.query.categoria ? req.query.categoria.toLowerCase() : ""
+
+  const resultado = producModel.ProductosInicio()
+  const productos = resultado.productos.filter(p => p.categoria.toLowerCase().includes(categoria))
+
+  res.render("Busqueda", {
+    titulo: "Busqueda",
+    page: "inicio",
+    style: "/styles/inicio.css",
+    productos,
+    busqueda : categoria
+  })
+}
+
 module.exports = {
   mostrarProductosIncio,
   productoDetalles,
