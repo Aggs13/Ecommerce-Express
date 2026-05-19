@@ -1,0 +1,19 @@
+<section class="Producto">
+    <h2>Resultados para : "<%= busqueda %>"</h2>
+
+    <div class="grid">
+        <% if (productos.length === 0){%>
+            <p>No se encontraron productos</p>
+        <% } %>
+
+        <% productos.forEach(p => { %>
+            <a href="/Detalles/<%= p.idP%>">
+                <article>
+                    <img src="<%= p.img %>" alt="<%= p.nombre %>">
+                    <p><%= p.nombre %></p>
+                    <h4>$<%= p.precio %></h4>
+                </article>
+            </a>
+        <% }) %>
+    </div>
+</section>
