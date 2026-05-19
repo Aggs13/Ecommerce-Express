@@ -12,7 +12,13 @@ function getProducto(id){
   return producto
 }
 
+function filtrarCategoria(categoria){
+  const productosCategoria = productos.filter(p => p.categoria == categoria)
+  return productosCategoria
+}
+
 module.exports = {
   ProductosInicio,
-  getProducto
+  getProducto,
+  filtrarCategoria
 }
