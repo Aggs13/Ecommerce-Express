@@ -8,9 +8,6 @@ const carritoRoute = require("./routes/carritoRoute")
 const usuarioRoute = require("./routes/usuarioRoute")
 const carritoController = require("./controller/CarritoController")
 
-const controladorUsuario = require("./Data/ControladorUsuario")
-const { Carrito, listaCarritos } = require("./Data/Carrito")
-
 const app = express()
 
 app.set("view engine", "ejs")
@@ -26,21 +23,21 @@ app.use(session({
   saveUninitialized: false
 }))
 
-app.use(productosRoute)
-app.use(carritoRoute)
-app.use(usuarioRoute)
-
-
 app.use((req, res, next) => {
   res.locals.usuario = req.session.usuario
   next()
 })
 
+app.use(carritoController.ActualizarContadorCarrito)
 
-app.listen(3000, () => {
-  console.log("Servidor en http://localhost:3000/")
-})
+app.use(productosRoute)
+app.use(carritoRoute)
+app.use(usuarioRoute)
 
 app.use((req, res) => {
   res.status(404).send("Error 404 - Pagina no encontrada")
+})
+
+app.listen(3000, () => {
+  console.log("Servidor en http://localhost:3000/")
 })

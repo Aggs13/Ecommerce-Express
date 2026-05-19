@@ -10,6 +10,29 @@ function validarSesion(req, res) {
   return true
 }
 
+function obtenerCarritoUsuario(req) {
+  let carrito = listaCarritos.find(c => c.idUsuario == req.session.usuario.id)
+
+  if (!carrito) {
+    carrito = new Carrito(req.session.usuario.id)
+    listaCarritos.push(carrito)
+  }
+
+  return carrito
+}
+
+function ActualizarContadorCarrito(req, res, next) {
+  if (!req.session.usuario) {
+    res.locals.cantidadCarrito = 0
+    return next()
+  }
+
+  const carrito = obtenerCarritoUsuario(req)
+  res.locals.cantidadCarrito = carrito.productos.reduce((total, p) => total + p.cantidad, 0)
+
+  next()
+}
+
 function AgregarCarro(req, res) {
   if (!validarSesion(req, res)) return
 
@@ -29,6 +52,20 @@ function RestarCarro(req, res) {
   if (!validarSesion(req, res)) return
 
   carritoModel.restarProducto(req.session.usuario.id, req.params.id)
+  res.redirect("/Carrito")
+}
+
+function sacarCarrito(req, res) {
+  if (!validarSesion(req, res)) return
+
+  const carrito = obtenerCarritoUsuario(req)
+  const idp = req.params.id
+  const index = carrito.productos.findIndex(p => p.idP == idp)
+
+  if (index !== -1) {
+    carrito.productos.splice(index, 1)
+  }
+
   res.redirect("/Carrito")
 }
 
@@ -54,46 +91,6 @@ function RenderCheckout(req, res) {
     page: "inicio",
     style: "/styles/Carrito.css"
   })
-
-
-function obtenerCarritoUsuario(req) {
-  let carrito = listaCarritos.find(c => c.idUsuario == req.session.usuario.id)
-  
-  if (!carrito) {
-    carrito = new Carrito(req.session.usuario.id)
-    listaCarritos.push(carrito)
-  }
-  
-  return carrito
-}
-
-function ActualizarContadorCarrito(req, res, next){
-
-  if (!req.session.usuario) {
-    res.locals.cantidadCarrito = 0
-    return next()
-  }
-  
-  const carrito = obtenerCarritoUsuario(req)
-  res.locals.cantidadCarrito = carrito.productos.reduce((total, p) => total + p.cantidad, 0)
-  
-  next()
-}
-
-function sacarCarrito(req,res){
-  if (!req.session.usuario) {
-    return res.redirect("/")
-  }
-    
-  const carrito = obtenerCarritoUsuario(req)
-  const idp = req.params.id
-  const index = carrito.productos.findIndex(p => p.idP == idp)
-    
-  if (index !== -1) {
-    carrito.productos.splice(index, 1)
-  }
-  
-  res.redirect("/Carrito")
 }
 
 module.exports = {
@@ -102,7 +99,6 @@ module.exports = {
   RestarCarro,
   RenderCarritoTotal,
   RenderCheckout,
-
   sacarCarrito,
   ActualizarContadorCarrito
-}}
+}

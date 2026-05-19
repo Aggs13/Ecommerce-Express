@@ -1,90 +1,47 @@
 <section>
-    <a href="/Inicio"><i class="fa-solid fa-arrow-left"></i> volver</a>
+    <a href="/inicio"><i class="fa-solid fa-arrow-left"></i> volver</a>
     <h2>Productos en tu Carrito</h2>
     <div class="contenedor-carrito">
 
-        <% if(carrito.length == 0){%>
+        <% if (carrito.length == 0) { %>
             <h3>Tu Carrito esta vacio</h3>
             <p>Agrega productos para comenzar tu compra</p>
 
             <div class="inicio">
-            <a href="/inicio">
-                <button class="boton-quitar">Volver al Inicio</button>
-            </a>
-                <div class="inicio">
                 <a href="/inicio">
                     <button class="boton-quitar">Volver al Inicio</button>
                 </a>
-                </div>
-
-            <%} else {%>  
-               
-
-
+            </div>
+        <% } else { %>
             <% carrito.forEach(p => { %>
                 <article>
-                    <img src="<%= p.img %>" alt="<%= p.nombre %>" >
+                    <img src="<%= p.img %>" alt="<%= p.nombre %>">
                     <p><%= p.nombre %></p>
-                    
 
                     <div class="contador">
                         <form action="/sacar-carrito/<%= p.idP %>" method="POST">
                             <button type="submit" class="boton-quitar">Quitar</button>
                         </form>
 
-                        
                         <form action="/restar-carrito/<%= p.idP %>" method="POST">
                             <button type="submit">-</button>
                         </form>
 
                         <span class="cantidad"><%= p.cantidad %></span>
-                        
+
                         <form action="/sumar-carrito/<%= p.idP %>" method="POST">
                             <button type="submit">+</button>
                         </form>
-                        
+
                         <h4>$<%= p.precio %></h4>
                     </div>
-                </article>    
+                </article>
             <% }) %>
+
             <h2 class="total">Total: $<%= total %></h2>
             <div class="contenedor-pago">
-                <button class="boton-pago">Ir a Pagar</button>
+                <a href="/Checkout"><button class="boton-pago">Ir a Pagar</button></a>
             </div>
-
-        <%} else {%>  
-           
-
-
-        <% carrito.forEach(p => { %>
-            <article>
-                <img src="<%= p.img %>" alt="<%= p.nombre %>" >
-                <p><%= p.nombre %></p>
-                
-
-                <div class="contador">
-                    <a href="/sacar-carrito/<%= p.idP %>">
-                    <button class="boton-quitar">Quitar</button>
-                    </a>
-                    
-                    <a href="/restar-carrito/<%= p.idP %>">
-                        <button>-</button>
-                    </a>
-
-                    <span class="cantidad"><%= p.cantidad %></span>
-                    
-                    <a href="/sumar-carrito/<%= p.idP %>">
-                        <button>+</button>
-                    </a>
-                    <h4>$<%= p.precio %></h4>
-                </div>
-            </article>    
-        <% }) %>
-        <h2 class="total">Total: $<%= total %></h2>
-        <div class="contenedor-pago">
-            <a href="/Checkout"><button class="boton-pago">Ir a Pagar</button></a>
-        </div>
+        <% } %>
     </div>
-   <% } %>  
-
 </section>
