@@ -4,6 +4,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <title><%= titulo %></title>
 
+<%
+  const usuarioActual = typeof usuario !== "undefined" ? usuario : null
+  const nombreUsuario = usuarioActual && usuarioActual.nombre ? usuarioActual.nombre : "Usuario"
+  const inicialUsuario = nombreUsuario.charAt(0).toUpperCase()
+%>
+
 <header class="main-header">
   <div class="header-container">
     <!-- Logo -->
@@ -37,17 +43,17 @@
         
         <!-- Usuario con menú desplegable -->
         <div class="user-dropdown">
-          <button class="icon-button user-button">
-            <div class="user-avatar">O</div>
+          <button class="icon-button user-button" type="button">
+            <div class="user-avatar"><%= inicialUsuario %></div>
             <span class="user-name">
-              <%= usuario ? usuario.nombre : "Usuario"%>
+              <%= nombreUsuario %>
               <i class="fas fa-chevron-down"></i>
             </span>
           </button>
           
           <ul class="dropdown-menu">
             <li class="dropdown-header">
-              <i class="fas fa-user"><a href="/Usuario"></i> <%= usuario ? usuario.nombre : "Usuario"%></a>
+              <a href="/Usuario"><i class="fas fa-user"></i> <%= nombreUsuario %></a>
             </li>
             <li><a href="/inicio"><i class="fas fa-home"></i> Inicio</a></li>
             <li><a href="/Carrito"><i class="fas fa-shopping-bag"></i> Mis Compras</a></li>

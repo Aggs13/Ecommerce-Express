@@ -88,6 +88,8 @@ app.get("/Usuario", (req, res) => {
   res.render("Usuario")
 })
 
+
+
 app.use(productosRoute)
 app.use(carritoRoute)
 
