@@ -43,9 +43,16 @@ function RenderCarritoTotal(req, res) {
   })
 }
 
+function RenderCheckout(req, res) {
+  if (!validarSesion(req, res)) return
+
+  res.render("Checkout")
+}
+
 module.exports = {
   AgregarCarro,
   SumarCarro,
   RestarCarro,
-  RenderCarritoTotal
+  RenderCarritoTotal,
+  RenderCheckout
 }
