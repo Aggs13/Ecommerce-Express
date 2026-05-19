@@ -80,5 +80,6 @@ module.exports = {
   mostrarProductosIncio,
   productoDetalles,
   buscarProductos,
-  mostrarTodosProductos
+  mostrarTodosProductos,
+  mostrarPorCategoria
 }
