@@ -16,12 +16,27 @@ main {
 .main-footer {
   margin-top: 40px;
   padding: 10px;
-  text-align: center;
   background-color: #d8d8d8;
   color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .main-footer p {
   margin: 0;
   font-weight: 600;
+}
+
+.main-footer p:first-child {
+  text-align: left;
+}
+
+.main-footer p:nth-child(2) {
+  text-align: center;
+}
+
+.main-footer p:last-child {
+  text-align: right;
 }

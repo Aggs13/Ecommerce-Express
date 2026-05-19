@@ -1,0 +1,43 @@
+
+<section class="Producto">
+    <h2>Productos</h2>
+
+    <div class="orden-productos">
+        <% if (typeof orden === "undefined" || !orden) { %>
+            <a href="/Productos?orden=asc">
+                <button type="button">Ordenar asc <i class="fa-solid fa-angles-up"></i></button>
+            </a>
+            <a href="/Productos?orden=desc">
+                <button type="button">Ordenar des <i class="fa-solid fa-angles-down"></i></button>
+            </a>
+        <% } else if (orden === "asc") { %>
+            <a href="/Productos?orden=desc">
+                <button type="button">Ordenar des <i class="fa-solid fa-angles-down"></i></button>
+            </a>
+            <a href="/Productos">
+                <button type="button">Borra Filtro <i class="fa-solid fa-angle-left"></i></button>
+            </a>
+        <% } else if (orden === "desc") { %>
+            <a href="/Productos?orden=asc">
+                <button type="button">Ordenar asc <i class="fa-solid fa-angles-up"></i></button>
+            </a>
+
+            <a href="/Productos">
+                <button type="button">Borra Filtro <i class="fa-solid fa-angle-left"></i></button>
+            </a>
+        <% } %>
+            
+    </div>
+
+    <div class="grid">
+        <% productos.forEach(p => { %>
+            <a href="/Detalles/<%= p.idP%>">
+                <article>
+                    <img src="<%= p.img %>" alt="<%= p.nombre %>">
+                    <p><%= p.nombre %></p>
+                    <h4>$<%= p.precio %></h4>
+                </article>
+            </a>
+        <% }) %>
+    </div>
+</section>

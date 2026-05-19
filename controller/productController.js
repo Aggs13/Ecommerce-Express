@@ -38,9 +38,32 @@ function buscarProductos(req, res){
   })
 
 }
+function mostrarTodosProductos(req, res) {
+  const resultado = producModel.ProductosInicio()
+  const orden = req.query.orden
+  let productos = [...resultado.productos]
+
+  if (orden === "asc") {
+    productos.sort((a, b) => a.precio - b.precio)
+  }
+
+  if (orden === "desc") {
+    productos.sort((a, b) => b.precio - a.precio)
+  }
+
+  res.render("Productos", {
+    titulo: "Productos",
+    page: "inicio",
+    style: "/styles/inicio.css",
+    productos,
+    orden
+  })
+}
+
 
 module.exports = {
   mostrarProductosIncio,
   productoDetalles,
-  buscarProductos
+  buscarProductos,
+  mostrarTodosProductos
 }
