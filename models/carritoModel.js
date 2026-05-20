@@ -1,6 +1,7 @@
 const productos = require("../Data/ProductosData")
 const { Carrito, listaCarritos } = require("../Data/Carrito")
 
+
 function obtenerCarritoUsuario(idUsuario) {
   let carrito = listaCarritos.find(c => c.idUsuario == idUsuario)
 
@@ -17,7 +18,7 @@ function obtenerCarritoUsuario(idUsuario) {
 function agregarProducto(idUsuario, idp) {
   const carrito = obtenerCarritoUsuario(idUsuario)
   const producto = productos.find(p => p.idP == idp)
-
+  
   if (!producto) return
 
   const existe = carrito.productos.find(p => p.idP == idp)
@@ -27,7 +28,6 @@ function agregarProducto(idUsuario, idp) {
     return
   }
 
-  
 
   carrito.productos.push({
     idP: producto.idP,
@@ -70,6 +70,19 @@ function calcularTotal(idUsuario) {
 }
 
 
+function verificarStock(idUsuario,idP){
+  const carrito = obtenerCarritoUsuario(idUsuario)
+
+  const producto = productos.find(p => p.idP == idP)
+  if (!producto) return false
+
+  const existe = carrito.productos.find(p => p.idP == idP)
+  if(!existe) return true
+  const cantidad = existe ? existe.cantidad : 0
+  return cantidad < producto.stock
+
+}
+
 
 
 module.exports = {
@@ -77,5 +90,6 @@ module.exports = {
   agregarProducto,
   sumarProducto,
   restarProducto,
-  calcularTotal
+  calcularTotal,
+  verificarStock
 }
