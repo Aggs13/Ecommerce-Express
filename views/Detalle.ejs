@@ -13,10 +13,14 @@
       <p><%= producto.descripcion %></p>
 
       <p><strong>Categoria:</strong> <%= producto.categoria %></p>
+      <% if(stockSuficiente){ %>
+        <form action="/agregar-carrito/<%= producto.idP %>" method="POST">
+          <button type="submit">Agregar al Carrito</button>
+        </form>
 
-      <form action="/agregar-carrito/<%= producto.idP %>" method="POST">
-        <button type="submit">Agregar al Carrito</button>
-      </form>
+      <% }else{ %>
+        <p>No hay stock</p>
+      <% } %>
     </div>
   </section>
 

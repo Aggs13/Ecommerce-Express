@@ -1,5 +1,5 @@
 const producModel = require("../models/productModel")
-
+const carritoModel = require("../models/carritoModel")
 
 function mostrarProductosIncio(req,res){
   const result = producModel.ProductosInicio()
@@ -15,12 +15,19 @@ function mostrarProductosIncio(req,res){
 
 function productoDetalles(req,res){
   const respuesta = producModel.getProducto(req.params.id)
+  let stockSuficiente = true
+
+   if (req.session.usuario) {
+    stockSuficiente = carritoModel.verificarStock(req.session.usuario.id,req.params.id)
+  }
+  
   res.render("Detalle",{
     titulo: respuesta.producto.nombre,
     page: "inicio",
     style: "/styles/Detalle.css",
     producto : respuesta.producto,
-    productosRelacionados : respuesta.productosRelacionados
+    productosRelacionados : respuesta.productosRelacionados,
+    stockSuficiente
   })
 }
 

@@ -19,6 +19,8 @@ function filtrarCategoria(categoria){
   return productosCategoria
 }
 
+
+
 module.exports = {
   ProductosInicio,
   getProducto,

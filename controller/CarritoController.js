@@ -43,7 +43,6 @@ function AgregarCarro(req, res) {
 
 function SumarCarro(req, res) {
   if (!validarSesion(req, res)) return
-
   carritoModel.sumarProducto(req.session.usuario.id, req.params.id)
   res.redirect("/Carrito")
 }
@@ -71,15 +70,18 @@ function sacarCarrito(req, res) {
 
 function RenderCarritoTotal(req, res) {
   if (!validarSesion(req, res)) return
-
+  const usuarioId = req.session.usuario.id
   const { carrito, total } = carritoModel.calcularTotal(req.session.usuario.id)
+
+  const carritoConStock = carrito.map(p => ({...p,stockSuficiente: carritoModel.verificarStock(usuarioId, p.idP)}))
 
   res.render("Carrito", {
     titulo: "Carrito",
     page: "inicio",
     style: "/styles/Carrito.css",
-    carrito,
-    total
+    carrito: carritoConStock,
+    total,
+
   })
 }
 

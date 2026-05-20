@@ -28,10 +28,13 @@
                         </form>
 
                         <span class="cantidad"><%= p.cantidad %></span>
-
-                        <form action="/sumar-carrito/<%= p.idP %>" method="POST">
-                            <button type="submit">+</button>
-                        </form>
+                        <%if(p.stockSuficiente){%>
+                            <form action="/sumar-carrito/<%= p.idP %>" method="POST">
+                                <button type="submit">+</button>
+                            </form>
+                        <% }else{ %>
+                            <p></p>
+                        <% } %>
 
                         <h4>$<%= p.precio %></h4>
                     </div>
