@@ -1,0 +1,52 @@
+.error-page {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background-color: #f3f4f6;
+}
+
+.error-card {
+  width: min(520px, 100%);
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 42px 34px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.error-code {
+  display: block;
+  margin-bottom: 14px;
+  color: #1bb7a0;
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.error-card h1 {
+  margin-bottom: 12px;
+  color: #222222;
+  font-size: 28px;
+}
+
+.error-card p {
+  margin-bottom: 24px;
+  color: #555555;
+  line-height: 1.5;
+}
+
+.error-card a {
+  display: inline-block;
+  padding: 11px 24px;
+  border-radius: 24px;
+  background-color: #4d5354;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.error-card a:hover {
+  opacity: 0.88;
+}
