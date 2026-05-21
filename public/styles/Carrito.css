@@ -105,3 +105,23 @@ article a {
     margin-top: 20px;
 }
 
+.boton-quitar{
+   border: none;
+    background: #4d5354;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    font-size: 14px;
+}
+.boton-checkout {
+    border: none;
+    background: #4d5354;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    font-size: 14px;
+}

@@ -1,0 +1,53 @@
+<br>
+
+<%- include("partials/categorias") %>
+
+<section class="Promocion">
+    <div class="Publicidad">
+        <p>50% OFF en Combo Plus <br> Canjeando 50.000 puntos <br> MiEcommerce</p>
+    </div>
+
+    <div class="Publicidad">
+        <p>50% OFF en HBO Max <br> Canjeando 50.000 puntos <br> MiEcommerce</p>
+    </div>
+</section>
+
+<section class="Producto">
+<h2>Te puede interesar</h2>
+
+    <div class="grid">
+
+      <% numeros.forEach(n => { %>
+        <% const p = productos[n] %>
+        <a href="/Detalles/<%= p.idP %>">
+
+          <article>
+            <img src="<%= p.img%>" alt="<%= p.nombre %>" >
+            <p><%= p.nombre %></p>
+            <h4>$<%= p.precio %></h4>
+          </article>
+        </a>
+      <% }) %>
+    </div>
+</section>
+
+<section class="Producto">
+<h2>Los mas pedidos</h2>
+    <div class="grid">
+      <% productos.slice(0,8).forEach(p => { %>
+        <a href="/Detalles/<%= p.idP %>">
+          <article>
+            <img src="<%= p.img%>" alt="<%= p.nombre %>" >
+            <p><%= p.nombre %></p>
+            <h4>$<%= p.precio %></h4>
+          </article>
+        </a>
+     <% }) %>
+    </div>
+</section>
+<div class="ver-todos-productos">
+  <a href="/Productos">
+    <button type="button">Ver Todos los Productos</button>
+  </a>
+</div>
+<%- include("partials/categorias") %>

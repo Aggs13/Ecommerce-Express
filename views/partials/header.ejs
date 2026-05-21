@@ -1,0 +1,99 @@
+<%
+  const usuarioActual = typeof usuario !== "undefined" ? usuario : null
+  const nombreUsuario = usuarioActual && usuarioActual.nombre ? usuarioActual.nombre : "Usuario"
+  const inicialUsuario = nombreUsuario.charAt(0).toUpperCase()
+%>
+
+<header class="main-header">
+  <div class="header-container">
+    <!-- Logo -->
+    <a href="/inicio" class="logo">
+      <span class="logo-mi">Mi</span><span class="logo-ecommerce">Ecommerce</span>
+    </a>
+    
+    <% if (page === 'inicio') { %>
+      <!-- Buscador solo en inicio -->
+      <form class="search-bar" action="/buscar" method="GET">
+        <input 
+          type="text" 
+          name="q"
+          class="search-input" 
+          placeholder="Buscar productos..." 
+          value="<%= typeof busqueda !== 'undefined' ? busqueda : '' %>"
+        />
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+
+      <!-- Iconos de carrito y perfil solo en inicio -->
+      <div class="header-icons">
+        <!-- Carrito con contador dinámico -->
+        <a href="/Carrito" class="icon-button cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <!-- Mostrar badge solo si hay elementos en el carrito -->
+          <% if (typeof cantidadCarrito !== 'undefined' && cantidadCarrito > 0) { %>
+            <span class="cart-badge"><%= cantidadCarrito %></span>
+          <% } %>
+        </a>
+
+        
+        
+        <!-- Usuario con menú desplegable -->
+        <div class="user-dropdown">
+          <button class="icon-button user-button" type="button">
+            <div class="user-avatar"><%= inicialUsuario %></div>
+            <span class="user-name">
+              <%= nombreUsuario %>
+              <i class="fas fa-chevron-down"></i>
+            </span>
+          </button>
+          
+          <ul class="dropdown-menu">
+            <li class="dropdown-header">
+              <a href="/Usuario"><i class="fas fa-user"></i> <%= nombreUsuario %></a>
+            </li>
+            <li><a href="/inicio"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="/Carrito"><i class="fas fa-shopping-bag"></i> Mis Compras</a></li>
+            <li><a href="/favoritos"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="/historial"><i class="fas fa-history"></i> Historial</a></li>
+            <li class="dropdown-divider"></li>
+            <li>
+              <button class="theme-toggle">
+                <i class="fas fa-moon"></i> Cambiar a Tema Oscuro
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</header>
+
+<script>
+  // Script para el menú desplegable
+  document.addEventListener('DOMContentLoaded', function() {
+    const userDropdown = document.querySelector('.user-dropdown');
+    const userButton = document.querySelector('.user-button');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    if (userButton && dropdownMenu) {
+      userButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        userDropdown.classList.toggle('active');
+      });
+      
+      // Cerrar el menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!userDropdown.contains(e.target)) {
+          userDropdown.classList.remove('active');
+        }
+      });
+      
+      // Prevenir que se cierre al hacer clic dentro del menú
+      dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    }
+  });
+</script>

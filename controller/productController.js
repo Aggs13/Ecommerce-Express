@@ -13,7 +13,6 @@ function mostrarProductosIncio(req,res){
   })
 }
 
-
 function productoDetalles(req,res){
   const idProducto = normalizeId(req.params.id)
 
@@ -29,10 +28,10 @@ function productoDetalles(req,res){
 
   let stockSuficiente = true
 
-   if (req.session.usuario) {
+  if (req.session.usuario) {
     stockSuficiente = carritoModel.verificarStock(req.session.usuario.id,idProducto)
   }
-  
+
   res.render("Detalle",{
     titulo: respuesta.producto.nombre,
     page: "inicio",
@@ -56,8 +55,8 @@ function buscarProductos(req, res){
     productos,
     busqueda
   })
-
 }
+
 function mostrarTodosProductos(req, res) {
   const resultado = producModel.ProductosInicio()
   const orden = req.query.orden
@@ -85,7 +84,6 @@ function mostrarTodosProductos(req, res) {
     categoria
   })
 }
-
 
 function mostrarPorCategoria(req,res){
   mostrarTodosProductos(req, res)

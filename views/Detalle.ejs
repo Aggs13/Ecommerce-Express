@@ -1,51 +1,49 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles/Detalle.css">
-  <title><%= producto.nombre %></title>
-</head>
-<body>
-  <%- include("../partial/header", {titulo:"Inicio", page:"inicio"}) %>
+<section class="detalle">
+  <a class="volver" href="/inicio"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
 
-  <main class="detalle">
-    <a class="volver" href="/inicio">Volver al Inicio</a>
+  <section class="detalle-card">
+    <div class="detalle-imagen">
+      <img src="<%= producto.img %>" alt="<%= producto.nombre %>">
+    </div>
 
-    <section class="detalle-producto">
-      <div class="detalle-imagen">
-        <img src="<%= producto.linkImg %>" alt="<%= producto.nombre %>">
-      </div>
+    <div class="detalle-info">
+      <h1><%= producto.nombre %></h1>
+      <p class="puntos"><strong>19.900 puntos</strong></p>
 
-      <div class="detalle-info">
-        <h1><%= producto.nombre %></h1>
-        <p class="precio"><%= producto.precio %> <span>puntos</span></p>
+      <h2>Descripcion</h2>
+      <p><%= producto.descripcion %></p>
 
-        <a class="boton-carrito" href="/agregar-carrito/<%= producto.id %>">
-          Agregar al Carrito
-        </a>
+      <p><strong>Categoria:</strong> <%= producto.categoria %></p>
 
-        <h2>Descripcion</h2>
-        <p class="descripcion"><%= producto.descripcion %></p>
-        <p class="categoria"><strong>Categoria:</strong> <%= producto.categoria %></p>
-      </div>
-    </section>
+      <% if(stockSuficiente){ %>
+        <form action="/agregar-carrito/<%= producto.idP %>" method="POST">
+          <button type="submit">Agregar al Carrito</button>
+        </form>
+      <% }else{ %>
+        <p>No hay stock</p>
+      <% } %>
+    </div>
+  </section>
 
-    <section class="sugeridos">
-      <h2>Tambien te puede interesar</h2>
+  <section class="Producto">
+    <h2>Tambien te puede interesar</h2>
 
-      <div class="sugeridos-grid">
-        <% productosSugeridos.forEach(p => { %>
-          <a class="producto-card" href="/Detalles/<%= p.id %>">
-            <img src="<%= p.linkImg %>" alt="<%= p.nombre %>">
-            <div class="producto-card-info">
+    <div class="grid">
+      <% if (!productosRelacionados || productosRelacionados.length == 0) { %>
+        <p>No hay productos relacionados disponibles</p>
+      <% } else { %>
+        <% productosRelacionados.slice(0,4).forEach(p => { %>
+          <a href="/Detalles/<%= p.idP %>">
+            <article>
+              <img src="<%= p.img %>" alt="<%= p.nombre %>">
               <p><%= p.nombre %></p>
-              <h3>$<%= p.precio %></h3>
-            </div>
+              <h4>$<%= p.precio %></h4>
+            </article>
           </a>
         <% }) %>
-      </div>
-    </section>
-  </main>
-</body>
-</html>
+      <% } %>
+    </div>
+  </section>
+</section>
+
+<%- include("./partials/categorias") %>
