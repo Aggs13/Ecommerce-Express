@@ -1,4 +1,6 @@
 const carritoModel = require("../models/carritoModel")
+const productModel = require("../models/productModel")
+const normalizeId = require("../utils/normalizeId")
 const { Carrito, listaCarritos } = require("../Data/Carrito")
 
 function validarSesion(req, res) {
@@ -21,6 +23,22 @@ function obtenerCarritoUsuario(req) {
   return carrito
 }
 
+function validarProductoParam(req, res) {
+  const idProducto = normalizeId(req.params.id)
+
+  if (!idProducto) {
+    res.status(400).send("Error 400 - ID de producto invalido")
+    return null
+  }
+
+  if (!productModel.existeProducto(idProducto)) {
+    res.status(404).send("Error 404 - Producto no encontrado")
+    return null
+  }
+
+  return idProducto
+}
+
 function ActualizarContadorCarrito(req, res, next) {
   if (!req.session.usuario) {
     res.locals.cantidadCarrito = 0
@@ -34,31 +52,41 @@ function ActualizarContadorCarrito(req, res, next) {
 }
 
 function AgregarCarro(req, res) {
+  const idp = validarProductoParam(req, res)
+  if (!idp) return
+
   if (!validarSesion(req, res)) return
 
-  const idp = req.params.id
   carritoModel.agregarProducto(req.session.usuario.id, idp)
   res.redirect("/Detalles/" + idp)
 }
 
 function SumarCarro(req, res) {
+  const idp = validarProductoParam(req, res)
+  if (!idp) return
+
   if (!validarSesion(req, res)) return
-  carritoModel.sumarProducto(req.session.usuario.id, req.params.id)
+  carritoModel.sumarProducto(req.session.usuario.id, idp)
   res.redirect("/Carrito")
 }
 
 function RestarCarro(req, res) {
+  const idp = validarProductoParam(req, res)
+  if (!idp) return
+
   if (!validarSesion(req, res)) return
 
-  carritoModel.restarProducto(req.session.usuario.id, req.params.id)
+  carritoModel.restarProducto(req.session.usuario.id, idp)
   res.redirect("/Carrito")
 }
 
 function sacarCarrito(req, res) {
+  const idp = validarProductoParam(req, res)
+  if (!idp) return
+
   if (!validarSesion(req, res)) return
 
   const carrito = obtenerCarritoUsuario(req)
-  const idp = req.params.id
   const index = carrito.productos.findIndex(p => p.idP == idp)
 
   if (index !== -1) {

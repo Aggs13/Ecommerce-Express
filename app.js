@@ -38,6 +38,16 @@ app.use((req, res) => {
   res.status(404).send("Error 404 - Pagina no encontrada")
 })
 
+app.use((err, req, res, next) => {
+  console.error(err)
+
+  res.status(500).render("500", {
+    titulo: "Error 500",
+    page: "",
+    style: "/styles/Error.css"
+  })
+})
+
 app.listen(3000, () => {
   console.log("Servidor en http://localhost:3000/")
 })

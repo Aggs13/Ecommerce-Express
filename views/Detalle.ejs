@@ -1,5 +1,6 @@
 <section class="detalle">
   <a class="volver" href="/inicio"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+
   <section class="detalle-card">
     <div class="detalle-imagen">
       <img src="<%= producto.img %>" alt="<%= producto.nombre %>">
@@ -13,26 +14,25 @@
       <p><%= producto.descripcion %></p>
 
       <p><strong>Categoria:</strong> <%= producto.categoria %></p>
+
       <% if(stockSuficiente){ %>
         <form action="/agregar-carrito/<%= producto.idP %>" method="POST">
           <button type="submit">Agregar al Carrito</button>
         </form>
-
       <% }else{ %>
         <p>No hay stock</p>
       <% } %>
     </div>
   </section>
 
-  
-<section class="Producto">
-<h2>Te puede interesar</h2>
+  <section class="Producto">
+    <h2>Tambien te puede interesar</h2>
 
     <div class="grid">
       <% if (!productosRelacionados || productosRelacionados.length == 0) { %>
         <p>No hay productos relacionados disponibles</p>
       <% } else { %>
-        <% productosRelacionados.forEach(p => { %>
+        <% productosRelacionados.slice(0,4).forEach(p => { %>
           <a href="/Detalles/<%= p.idP %>">
             <article>
               <img src="<%= p.img %>" alt="<%= p.nombre %>">
@@ -43,8 +43,7 @@
         <% }) %>
       <% } %>
     </div>
+  </section>
 </section>
 
-
-</section>
 <%- include("./partials/categorias") %>

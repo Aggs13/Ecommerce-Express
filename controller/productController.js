@@ -1,5 +1,6 @@
 const producModel = require("../models/productModel")
 const carritoModel = require("../models/carritoModel")
+const normalizeId = require("../utils/normalizeId")
 
 function mostrarProductosIncio(req,res){
   const result = producModel.ProductosInicio()
@@ -12,15 +13,25 @@ function mostrarProductosIncio(req,res){
   })
 }
 
-
 function productoDetalles(req,res){
-  const respuesta = producModel.getProducto(req.params.id)
+  const idProducto = normalizeId(req.params.id)
+
+  if (!idProducto) {
+    return res.status(400).send("Error 400 - ID de producto invalido")
+  }
+
+  const respuesta = producModel.getProducto(idProducto)
+
+  if (!respuesta) {
+    return res.status(404).send("Error 404 - Producto no encontrado")
+  }
+
   let stockSuficiente = true
 
-   if (req.session.usuario) {
-    stockSuficiente = carritoModel.verificarStock(req.session.usuario.id,req.params.id)
+  if (req.session.usuario) {
+    stockSuficiente = carritoModel.verificarStock(req.session.usuario.id,idProducto)
   }
-  
+
   res.render("Detalle",{
     titulo: respuesta.producto.nombre,
     page: "inicio",
@@ -44,8 +55,8 @@ function buscarProductos(req, res){
     productos,
     busqueda
   })
-
 }
+
 function mostrarTodosProductos(req, res) {
   const resultado = producModel.ProductosInicio()
   const orden = req.query.orden
@@ -73,7 +84,6 @@ function mostrarTodosProductos(req, res) {
     categoria
   })
 }
-
 
 function mostrarPorCategoria(req,res){
   mostrarTodosProductos(req, res)
