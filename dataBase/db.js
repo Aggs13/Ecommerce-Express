@@ -6,6 +6,9 @@ const db = new sqlite3.Database("./dataBase/ecommerce.db", (err) => {
         return
     }
     console.log("Conectado a SQLite")
+    
 })
+
+
 
 module.exports = db

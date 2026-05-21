@@ -1,25 +1,63 @@
+const db = require("../database/db")
 
-const Usuario = require("../Data/Usuario");
+async function agregarUsuario(nombre, apellido, email, password) {
 
-class ControladorUsuario {
-  constructor() {
-      this.usuarios = [];
-  }
+  const usuario = await VerificarRegistro(email)
+  if(usuario != null) throw new Error("El usuario con ese email ya esta registrado")
 
-  agregarUsuario(nombre, apellido, email, password) {
-    const nuevoUsuario = new Usuario(nombre, apellido, email, password);
-    this.usuarios.push(nuevoUsuario);
-  }
-
-  obtenerUsuarios() {
-    return this.usuarios;
-  }
+  return new Promise((resolve,reject) => {
   
-  validarUsuario(email, password) {
-    return this.usuarios.find(
-      u => u.email === email && u.password === password
-    )   
-  }
+    const query = "INSERT INTO usuarios(nombre,apellido,email,password) VALUES (?, ?, ?, ?)"
+    db.run(query,[nombre,apellido,email,password],(err)=> {
+      if(err){
+        return reject("No fue posible registrar")
+      }
+      resolve("Bien venido " + nombre)
+    })
+
+  })
 
 }
-module.exports = new ControladorUsuario();
+
+
+async function VerificarInicio(email,password) {
+  return new Promise((resolve,reject) => {
+
+    const query = "SELECT id,nombre,email FROM usuarios WHERE email = ? AND password = ?"
+    db.get(query,[email,password],(err,row) => {
+      if(err){
+        console.log(err)
+        return reject(err)
+      }
+      resolve(row)
+    })
+  })
+}
+
+
+
+async function  VerificarRegistro(email) {
+  return new Promise((resolve,reject) => {
+
+    const query = "SELECT email FROM usuarios WHERE email = ?"
+
+    db.get(query,[email], (err,row) => {
+      if(err){
+        console.log(err)
+        return reject(err)
+        
+      }
+      resolve(row)
+    })
+  })
+
+
+}
+
+function IniciarSesion(email,password){
+
+}
+module.exports = {
+  agregarUsuario,
+  VerificarInicio
+}
