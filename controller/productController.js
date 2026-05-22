@@ -90,6 +90,15 @@ async function mostrarTodosProductos(req, res) {
   })
 }
 
+
+function Favoritos(req,res){
+  res.render("Favoritos",{
+    titulo: "Favoritos",
+    page: "inicio",
+    style: "/styles/Carrito.css"
+  })
+}
+
 function mostrarPorCategoria(req,res){
   mostrarTodosProductos(req, res)
 }
@@ -99,5 +108,6 @@ module.exports = {
   productoDetalles,
   buscarProductos,
   mostrarTodosProductos,
-  mostrarPorCategoria
+  mostrarPorCategoria,
+  Favoritos
 }

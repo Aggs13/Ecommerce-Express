@@ -7,4 +7,6 @@ router.get("/Detalles/:id", productController.productoDetalles)
 router.get("/Categorias",productController.mostrarPorCategoria)
 router.get("/buscar", productController.buscarProductos)
 router.get("/Productos", productController.mostrarTodosProductos)
+router.get("/Favoritos",productController.Favoritos)
+
 module.exports = router
