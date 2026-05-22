@@ -12,7 +12,7 @@ async function agregarUsuario(nombre, apellido, email, password) {
       if(err){
         return reject("No fue posible registrar")
       }
-      resolve("Bien venido " + nombre)
+      resolve("Bienvenido " + nombre)
     })
 
   })
@@ -54,9 +54,6 @@ async function  VerificarRegistro(email) {
 
 }
 
-function IniciarSesion(email,password){
-
-}
 module.exports = {
   agregarUsuario,
   VerificarInicio
