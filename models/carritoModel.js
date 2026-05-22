@@ -52,7 +52,11 @@ async function agregarProducto(idUsuario, idProducto) {
           return reject(err)
         }
         if(existe){
+          if(existe.cantidad >= producto.stock){
+            return resolve(false)
+          }
           const queryActualizar = "UPDATE carrito_productos SET cantidad = cantidad + 1 WHERE id = ?"
+
           db.run(queryActualizar, [existe.id], (err) => {
             if(err){
               console.log(err)

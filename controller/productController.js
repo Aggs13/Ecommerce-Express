@@ -29,7 +29,7 @@ async function productoDetalles(req,res){
   let stockSuficiente = true
 
   if (req.session.usuario) {
-    stockSuficiente = carritoModel.verificarStock(req.session.usuario.id,idProducto)
+    stockSuficiente = await carritoModel.verificarStock(req.session.usuario.id,idProducto)
   }
 
   res.render("Detalle",{
