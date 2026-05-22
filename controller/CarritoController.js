@@ -59,7 +59,15 @@ async function AgregarCarro(req, res) {
 
   if (!validarSesion(req, res)) return
 
-  await carritoModel.agregarProducto(req.session.usuario.id, idp)
+  const agregado =
+  await carritoModel.agregarProducto(
+    req.session.usuario.id,
+    idp
+  )
+
+  if(!agregado){
+    return res.redirect("/Detalles/" + idp)
+  }
   res.redirect("/Detalles/" + idp)
 }
  
