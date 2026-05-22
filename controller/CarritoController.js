@@ -14,7 +14,7 @@ function validarSesion(req, res) {
 
 
 async function validarProductoParam(req, res) {
-    const idProducto = normalizeId(req.params.id)
+    const idProducto = await normalizeId(req.params.id)
 
   if (!idProducto) {
     res.status(400).send("Error 400 - ID de producto invalido")
@@ -29,7 +29,7 @@ async function validarProductoParam(req, res) {
     return null
   }
 
-  return idProducto
+  return idProducto.id
 }
 
 async function ActualizarContadorCarrito(req, res, next) {
