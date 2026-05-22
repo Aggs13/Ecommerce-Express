@@ -19,7 +19,7 @@
 
       <% numeros.forEach(n => { %>
         <% const p = productos[n] %>
-        <a href="/Detalles/<%= p.idP %>">
+        <a href="/Detalles/<%= p.id %>">
 
           <article>
             <img src="<%= p.img%>" alt="<%= p.nombre %>" >
@@ -35,7 +35,7 @@
 <h2>Los mas pedidos</h2>
     <div class="grid">
       <% productos.slice(0,8).forEach(p => { %>
-        <a href="/Detalles/<%= p.idP %>">
+        <a href="/Detalles/<%= p.id %>">
           <article>
             <img src="<%= p.img%>" alt="<%= p.nombre %>" >
             <p><%= p.nombre %></p>

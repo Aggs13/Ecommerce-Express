@@ -16,7 +16,7 @@
       <p><strong>Categoria:</strong> <%= producto.categoria %></p>
 
       <% if(stockSuficiente){ %>
-        <form action="/agregar-carrito/<%= producto.idP %>" method="POST">
+        <form action="/agregar-carrito/<%= producto.id %>" method="POST">
           <button type="submit">Agregar al Carrito</button>
         </form>
       <% }else{ %>
@@ -33,7 +33,7 @@
         <p>No hay productos relacionados disponibles</p>
       <% } else { %>
         <% productosRelacionados.slice(0,4).forEach(p => { %>
-          <a href="/Detalles/<%= p.idP %>">
+          <a href="/Detalles/<%= p.id %>">
             <article>
               <img src="<%= p.img %>" alt="<%= p.nombre %>">
               <p><%= p.nombre %></p>

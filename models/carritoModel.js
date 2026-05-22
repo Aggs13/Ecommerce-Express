@@ -1,88 +1,230 @@
-const productos = require("../Data/ProductosData")
-const { Carrito, listaCarritos } = require("../Data/Carrito")
+const db = require("../database/db");
 
 
-function obtenerCarritoUsuario(idUsuario) {
-  let carrito = listaCarritos.find(c => c.idUsuario == idUsuario)
+async function obtenerCarritoUsuario(idUsuario) {
+  return new Promise ((resolve, reject)=>{
+    const queryBuscar = "SELECT * FROM carritos WHERE usuario_id = ?"
 
-  if (!carrito) {
-    carrito = new Carrito(idUsuario)
-    listaCarritos.push(carrito)
-  }
+    db.get(queryBuscar, [idUsuario], (err, carrito)=> {
+      if (err){
+        console.log(err)
+        return reject(err)
+      }
 
-  return carrito
+      if(carrito){
+        return resolve(carrito)
+      }
+
+      const queryCrear = "INSERT INTO carritos (usuario_id) VALUES (?)"
+
+      db.run(queryCrear, [idUsuario], function(err){
+        if(err){
+          console.log(err)
+          return reject(err)
+        }
+        resolve({id: this.lastID, usuario_id: idUsuario})
+      })
+    })
+  })
 }
 
 
+async function agregarProducto(idUsuario, idProducto) {
+  const carrito = await obtenerCarritoUsuario(idUsuario)
 
-function agregarProducto(idUsuario, idp) {
-  const carrito = obtenerCarritoUsuario(idUsuario)
-  const producto = productos.find(p => p.idP == idp)
-  
-  if (!producto) return
+  return new Promise((resolve, reject) => {
+    const queryBuscar = "SELECT * FROM productos WHERE id = ?"
 
-  const existe = carrito.productos.find(p => p.idP == idp)
+    db.get(queryBuscar, [idProducto], (err, producto)=>{
+      if (err){
+        console.log(err)
+        return reject(err)
+      }
 
-  if (existe) {
-    existe.cantidad += 1
-    return
-  }
+      if(!producto){
+        return resolve(null)
+      }
 
+      const queryExiste = "SELECT * FROM carrito_productos WHERE carrito_id = ? AND producto_id = ?"
+      db.get(queryExiste, [carrito.id, idProducto], (err, existe)=> {
+        if (err){
+          console.log(err)
+          return reject(err)
+        }
+        if(existe){
+          const queryActualizar = "UPDATE carrito_productos SET cantidad = cantidad + 1 WHERE id = ?"
+          db.run(queryActualizar, [existe.id], (err) => {
+            if(err){
+              console.log(err)
+              return reject(err)
+            }
+            resolve(true)
+          })
 
-  carrito.productos.push({
-    idP: producto.idP,
-    nombre: producto.nombre,
-    precio: producto.precio,
-    img: producto.img,
-    cantidad: 1
+        }else{
+          const queryInsertar = "INSERT INTO carrito_productos (carrito_id, producto_id, cantidad) VALUES (?, ?, 1)"
+          db.run(queryInsertar, [carrito.id, idProducto], (err) => {
+            if(err){
+              console.log(err)
+              return reject(err)
+            }
+            resolve(true)
+          })
+        }
+      })
+    })
   })
 }
 
 
 
-function sumarProducto(idUsuario, idp) {
-  agregarProducto(idUsuario, idp)
+async function sumarProducto(idUsuario, idProducto) {
+  return agregarProducto(idUsuario, idProducto)
 }
 
-function restarProducto(idUsuario, idp) {
-  const carrito = obtenerCarritoUsuario(idUsuario)
-  const index = carrito.productos.findIndex(p => p.idP == idp)
+async function restarProducto(idUsuario, idProducto) {
+  const carrito = await obtenerCarritoUsuario(idUsuario)
+  return new Promise((resolve, reject) => {
+    const queryBuscar = "SELECT * FROM carrito_productos WHERE carrito_id = ? AND producto_id = ?"
 
-  if (index === -1) return
+    db.get(queryBuscar, [carrito.id, idProducto], (err,existe) => {
+      if (err){
+        console.log(err)
+        return reject(err)
+      }
+      if(!existe){
+        return resolve(false)
+      }
 
-  carrito.productos[index].cantidad -= 1
+      if(existe.cantidad <= 1){
+        const queryEliminar = "DELETE FROM carrito_productos WHERE id = ?"
 
-  if (carrito.productos[index].cantidad <= 0) {
-    carrito.productos.splice(index, 1)
-  }
+        db.run(queryEliminar, [existe.id], (err) => {
+          if(err){
+            console.log(err)
+            return reject(err)
+          }
+          resolve(true)
+        })
+      }else{
+        const queryActualizar = "UPDATE carrito_productos SET cantidad = cantidad - 1 WHERE id = ?"
+        db.run(queryActualizar, [existe.id], (err) => {
+          if(err){
+            console.log(err)
+            return reject(err)
+          }
+          resolve(true)
+        })
+      }
+    })
+  })
 }
 
-function calcularTotal(idUsuario) {
-  const carritoUsuario = obtenerCarritoUsuario(idUsuario)
-  const total = carritoUsuario.productos.reduce((acum, p) => {
-    return acum + p.precio * p.cantidad
-  }, 0)
-
-  return {
-    carrito: carritoUsuario.productos,
-    total
-  }
+async function calcularTotal(idUsuario) {
+  const carrito = await obtenerCarritoUsuario(idUsuario)
+  return new Promise((resolve, reject) => {
+    const query = `
+    SELECT SUM(p.precio * cp.cantidad) AS total
+    FROM carrito_productos cp
+    JOIN productos p ON cp.producto_id = p.id
+    WHERE cp.carrito_id = ?  
+    `
+    db.get(query, [carrito.id], (err, row) => {
+      if (err){
+        console.log(err)
+        return reject(err)
+      }
+      resolve(row?.total || 0)
+    })
+  })
 }
 
 
-function verificarStock(idUsuario,idP){
-  const carrito = obtenerCarritoUsuario(idUsuario)
+async function verificarStock(idUsuario,idProducto) {
+  const carrito = await obtenerCarritoUsuario(idUsuario)
 
-  const producto = productos.find(p => p.idP == idP)
-  if (!producto) return false
+  return new Promise((resolve, reject) => {
+    const queryProducto = "SELECT stock FROM productos WHERE id = ?"
+    db.get(queryProducto, [idProducto], (err, producto) => {
+      if (err){
+        console.log(err)
+        return reject(err)
+      }
+      if (!producto){
+        return resolve(false)
+      }
+      const queryCarrito = "SELECT cantidad FROM carrito_productos WHERE carrito_id = ? AND producto_id = ?"
 
-  const existe = carrito.productos.find(p => p.idP == idP)
-  if(!existe) return true
-  const cantidad = existe ? existe.cantidad : 0
-  return cantidad < producto.stock
+      db.get(queryCarrito, [carrito.id, idProducto], (err, carritoProducto) => {
 
+        if (err){
+          console.log(err)
+          return reject(err)
+        }
+
+        const cantidad = carritoProducto
+          ? carritoProducto.cantidad
+          : 0
+
+        resolve(producto.stock > cantidad)
+      })
+    })
+  })
 }
 
+async function obtenerProductosCarrito(idUsuario) {
+
+  const carrito = await obtenerCarritoUsuario(idUsuario)
+
+  return new Promise((resolve, reject) => {
+
+    const query = `
+    SELECT cp.producto_id, cp.cantidad, p.nombre, p.precio, p.img
+    FROM carrito_productos cp
+    JOIN productos p ON cp.producto_id = p.id
+    WHERE cp.carrito_id = ?
+    `
+
+    db.all(query, [carrito.id], (err, rows) => {
+
+      if (err) {
+        console.log(err)
+        return reject(err)
+      }
+
+      resolve(rows)
+    })
+  })
+}
+
+async function eliminarProducto(idUsuario, idProducto) {
+
+  const carrito =
+    await obtenerCarritoUsuario(idUsuario)
+
+  return new Promise((resolve, reject) => {
+
+    const query = `
+      DELETE FROM carrito_productos
+      WHERE carrito_id = ?
+      AND producto_id = ?
+    `
+
+    db.run(
+      query,
+      [carrito.id, idProducto],
+      (err) => {
+
+        if (err) {
+          console.log(err)
+          return reject(err)
+        }
+
+        resolve(true)
+      }
+    )
+  })
+}
 
 
 module.exports = {
@@ -91,5 +233,7 @@ module.exports = {
   sumarProducto,
   restarProducto,
   calcularTotal,
-  verificarStock
+  verificarStock,
+  obtenerProductosCarrito,
+  eliminarProducto
 }

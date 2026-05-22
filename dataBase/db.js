@@ -9,6 +9,4 @@ const db = new sqlite3.Database("./dataBase/ecommerce.db", (err) => {
     
 })
 
-
-
 module.exports = db

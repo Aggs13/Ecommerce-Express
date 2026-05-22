@@ -1,27 +1,78 @@
 // Funciones CRUD 
-const productos = require("../Data/ProductosData")
+const db = require("../database/db")
 
-function ProductosInicio(){
-  const numeros = [...Array(productos.length).keys()].sort(() => Math.random() - 0.5).slice(0,4)
-  return {productos,numeros}
+async function ProductosInicio(){
+  return new Promise((resolve,rejects)=>{
+    const query = "SELECT * FROM productos"
+
+    db.all(query,[], (err, rows)=> {
+      if (err){
+        console.log(err)
+        return rejects(err)
+      }
+      const numeros = [...Array(rows.length).keys()]
+      .sort(()=> Math.random() - 0.5)
+      .slice(0, 4)
+
+      resolve({productos: rows, numeros})
+
+    })
+  })
 }
 
 function getProducto(id){
-  const producto = productos.find(p => p.idP == id)
-  if (!producto) return null
+    return new Promise((resolve, rejects)=>{
+      const query = "SELECT * FROM productos WHERE id = ?"
 
-  const productosRelacionados = productos.filter(p => p.categoria == producto.categoria && p.idP != producto.idP)
+      db.get(query, [id], (err, producto) => {
+        if (err){
+          console.log(err)
+          return rejects(err)
+        }
+        if (!producto) {
+          return resolve(null)
+        }
+        const queryRelacionados = "SELECT * FROM productos WHERE categoria = ? AND id != ?"
 
-  return {producto,productosRelacionados}
+        db.all(queryRelacionados, [producto.categoria, id], (err, productosRelacionados)=>{
+          if(err){
+            console.log(err)
+            return rejects(err)
+          }
+          resolve({producto, productosRelacionados})
+        })
+      })
+    })
 }
 
+
 function existeProducto(id) {
-  return productos.some(p => p.idP == id)
+  return new Promise((resolve, rejects) => {
+    const query = "SELECT COUNT(*) AS count FROM productos WHERE id = ?"
+  db.get(query, [id], (err, row) =>{
+    if (err){
+      console.log(err)
+      return rejects(err)
+    }
+    resolve(!!row)
+  })
+  
+  })
+  
 }
 
 function filtrarCategoria(categoria){
-  const productosCategoria = productos.filter(p => p.categoria == categoria)
-  return productosCategoria
+  return new Promise((resolve, rejects) => {
+    const query = "SELECT * FROM productos  WHERE categoria = ?"
+
+    db.all(query, [categoria], (err, rows)=> {
+      if (err){
+        console.log(err)
+        return rejects(err)
+      }
+      resolve(rows)
+    })
+  })
 }
 
 module.exports = {

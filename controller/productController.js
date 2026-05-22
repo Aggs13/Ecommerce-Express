@@ -2,8 +2,8 @@ const producModel = require("../models/productModel")
 const carritoModel = require("../models/carritoModel")
 const normalizeId = require("../utils/normalizeId")
 
-function mostrarProductosIncio(req,res){
-  const result = producModel.ProductosInicio()
+async function mostrarProductosIncio(req,res){
+  const result = await producModel.ProductosInicio()
   res.render("Inicio",{
     titulo: "Inicio",
     page: "inicio",
@@ -13,14 +13,14 @@ function mostrarProductosIncio(req,res){
   })
 }
 
-function productoDetalles(req,res){
+async function productoDetalles(req,res){
   const idProducto = normalizeId(req.params.id)
 
   if (!idProducto) {
     return res.status(400).send("Error 400 - ID de producto invalido")
   }
 
-  const respuesta = producModel.getProducto(idProducto)
+  const respuesta = await producModel.getProducto(idProducto)
 
   if (!respuesta) {
     return res.status(404).send("Error 404 - Producto no encontrado")
@@ -42,8 +42,8 @@ function productoDetalles(req,res){
   })
 }
 
-function buscarProductos(req, res){
-  const resultado = producModel.ProductosInicio()
+async function buscarProductos(req, res){
+  const resultado = await producModel.ProductosInicio()
   const busqueda = req.query.q ? req.query.q.toLowerCase() : ""
 
   const productos = resultado.productos.filter(p => p.nombre.toLowerCase().includes(busqueda) || p.categoria.toLowerCase().includes(busqueda))
@@ -57,8 +57,8 @@ function buscarProductos(req, res){
   })
 }
 
-function mostrarTodosProductos(req, res) {
-  const resultado = producModel.ProductosInicio()
+async function mostrarTodosProductos(req, res) {
+  const resultado = await producModel.ProductosInicio()
   const orden = req.query.orden
   const categoria = req.query.categoria || ""
   let productos = [...resultado.productos]

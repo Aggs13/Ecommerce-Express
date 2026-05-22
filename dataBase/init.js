@@ -12,12 +12,13 @@ db.serialize(() => {
   `)
     db.run(`
     CREATE TABLE IF NOT EXISTS productos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY NOT NULL,
       nombre TEXT NOT NULL,
       descripcion TEXT,
       categoria TEXT,
       precio REAL NOT NULL,
-      img TEXT
+      img TEXT,
+      stock INTEGER DEFAULT 0
     )
   `)
     db.run(`
@@ -37,5 +38,15 @@ db.serialize(() => {
       FOREIGN KEY (producto_id) REFERENCES productos(id)
     )
   `)
+    db.run(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id_orders INTEGER PRIMARY KEY NOT NULL
+      )
+    `)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS order_items (
+          id_order_items INTEGER PRIMARY KEY NOT NULL
+          )
+      `)
 })
 console.log("Tablas creadas")

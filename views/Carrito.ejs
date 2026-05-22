@@ -3,7 +3,7 @@
     <h2>Productos en tu Carrito</h2>
     <div class="contenedor-carrito">
 
-        <% if (carrito.length == 0) { %>
+        <% if (!carrito || carrito.length == 0) { %>
             <h3>Tu Carrito esta vacio</h3>
             <p>Agrega productos para comenzar tu compra</p>
 
@@ -19,17 +19,17 @@
                     <p><%= p.nombre %></p>
 
                     <div class="contador">
-                        <form action="/sacar-carrito/<%= p.idP %>" method="POST">
+                        <form action="/sacar-carrito/<%= p.producto_id %>" method="POST">
                             <button type="submit" class="boton-quitar">Quitar</button>
                         </form>
 
-                        <form action="/restar-carrito/<%= p.idP %>" method="POST">
+                        <form action="/restar-carrito/<%= p.producto_id %>" method="POST">
                             <button type="submit">-</button>
                         </form>
 
                         <span class="cantidad"><%= p.cantidad %></span>
                         <%if(p.stockSuficiente){%>
-                            <form action="/sumar-carrito/<%= p.idP %>" method="POST">
+                            <form action="/sumar-carrito/<%= p.producto_id %>" method="POST">
                                 <button type="submit">+</button>
                             </form>
                         <% }else{ %>
