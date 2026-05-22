@@ -120,6 +120,8 @@ async function restarProducto(idUsuario, idProducto) {
   })
 }
 
+
+
 async function calcularTotal(idUsuario) {
   const carrito = await obtenerCarritoUsuario(idUsuario)
   return new Promise((resolve, reject) => {

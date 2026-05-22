@@ -14,12 +14,17 @@ async function mostrarProductosIncio(req,res){
 }
 
 async function productoDetalles(req,res){
-  const idProducto = normalizeId(req.params.id)
+  const verificarId = await normalizeId(req.params.id)
 
-  if (!idProducto) {
+  if (verificarId.error === "ID no valido") {
     return res.status(400).send("Error 400 - ID de producto invalido")
   }
 
+  if (verificarId.error === "404") {
+    return res.status(404).send("Error 404 - Producto no encontrado")
+  }
+  const idProducto = verificarId.id
+  
   const respuesta = await producModel.getProducto(idProducto)
 
   if (!respuesta) {
@@ -29,7 +34,7 @@ async function productoDetalles(req,res){
   let stockSuficiente = true
 
   if (req.session.usuario) {
-    stockSuficiente = carritoModel.verificarStock(req.session.usuario.id,idProducto)
+    stockSuficiente = await carritoModel.verificarStock(req.session.usuario.id,idProducto)
   }
 
   res.render("Detalle",{
