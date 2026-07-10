@@ -3,167 +3,86 @@ const productModel = require("../models/productModel")
 const normalizeId = require("../utils/normalizeId")
 
 
-function validarSesion(req, res) {
-  if (!req.session.usuario) {
-    res.redirect("/")
-    return false
-  }
-
-  return true
-}
-
-
 async function validarProductoParam(req, res) {
     const idProducto = await normalizeId(req.params.id)
 
   if (!idProducto) {
-    res.status(400).send("Error 400 - ID de producto invalido")
+    res.status(400).json({ success: false, error: "ID de producto inválido" })
     return null
   }
 
-  const existe =
-    await productModel.existeProducto(idProducto)
+  const existe = await productModel.existeProducto(idProducto)
 
   if (!existe) {
-    res.status(404).send("Error 404 - Producto no encontrado")
+    res.status(404).json({ success: false, error: "Producto no encontrado" })
     return null
   }
 
   return idProducto.id
 }
 
-async function ActualizarContadorCarrito(req, res, next) {
-  if (!req.session.usuario) {
-    res.locals.cantidadCarrito = 0
-    return next()
-  }
 
-  const resultado =
-    await carritoModel.obtenerProductosCarrito(
-      req.session.usuario.id
-    )
 
-  const cantidad =
-    resultado.reduce((total, p) => {
-      return total + p.cantidad
-    }, 0)
-
-  res.locals.cantidadCarrito = cantidad
-
-  next()
-}
-
-async function AgregarCarro(req, res) {
+async function agregar(req, res) {
   const idp = await validarProductoParam(req, res)
   if (!idp) return
 
-  if (!validarSesion(req, res)) return
-
-  const agregado =
-  await carritoModel.agregarProducto(
-    req.session.usuario.id,
-    idp
-  )
+  const agregado = await carritoModel.agregarProducto(req.usuario.id, idp)
 
   if(!agregado){
-    return res.redirect("/Detalles/" + idp)
+    return res.status(400).json({success: false, error: "Stock insuficiente"})
   }
-  res.redirect("/Detalles/" + idp)
+
+  res.json({success: true, message: "Producto agregado al carrito"})
 }
  
-async function SumarCarro(req, res) {
+async function sumar(req, res) {
   const idp = await validarProductoParam(req, res)
   if (!idp) return
 
-  if (!validarSesion(req, res)) return
-  await carritoModel.sumarProducto(req.session.usuario.id, idp)
-  res.redirect("/Carrito")
+  await carritoModel.sumarProducto(req.usuario.id, idp)
+  res.json({success: true, message: "Cantidad aumentada"})
 }
 
-async function RestarCarro(req, res) {
+async function restar(req, res) {
   const idp = await validarProductoParam(req, res)
   if (!idp) return
-
-  if (!validarSesion(req, res)) return
 
   await carritoModel.restarProducto(req.session.usuario.id, idp)
-  res.redirect("/Carrito")
+  res.json({ success: true, message: "Cantidad disminuida" })
 }
 
-async function sacarCarrito(req, res) {
-  if (!validarSesion(req, res)) return
 
-  const idp = await validarProductoParam(req, res)
 
-  if (!idp) return
+async function obtener(req, res) {
+  const productos = await carritoModel.obtenerProductosCarrito(req.usuario.id)
+  const total = await carritoModel.calcularTotal(req.usuario.id)
 
-  await carritoModel.eliminarProducto(
-    req.session.usuario.id,
-    idp
+  const productosConStock = await Promise.all(
+    productos.map(async (p) => {
+      const stockSuficiente = await carritoModel.verificarStock(req.usuario.id, p.producto_id)
+      return { ...p, stockSuficiente }
+    })
   )
 
-  res.redirect("/Carrito")
+  res.json({ success: true, data: { productos: productosConStock, total } })
+
 }
 
-async function RenderCarritoTotal(req, res) {
-  if (!validarSesion(req, res)) return
+async function eliminar(req, res) {
+  const idp = await validarProductoParam(req, res)
+  if (!idp) return
 
-  const usuarioId = req.session.usuario.id
-
-  const carrito =
-    await carritoModel.obtenerProductosCarrito(
-      usuarioId
-    )
-
-  const total =
-    await carritoModel.calcularTotal(
-      usuarioId
-    )
-
-  const carritoConStock =
-    await Promise.all(
-      carrito.map(async (p) => {
-
-        const stockSuficiente =
-          await carritoModel.verificarStock(
-            usuarioId,
-            p.producto_id
-          )
-
-        return {
-          ...p,
-          stockSuficiente
-        }
-      })
-    )
-
-  res.render("Carrito", {
-    titulo: "Carrito",
-    page: "inicio",
-    style: "/styles/Carrito.css",
-    carrito: carritoConStock,
-    total
-  })
-}
-
-function RenderCheckout(req, res) {
-  if (!validarSesion(req, res)) return
-
-  res.render("Checkout", {
-    titulo: "Checkout",
-    page: "inicio",
-    style: "/styles/Carrito.css"
-  })
+  await carritoModel.eliminarProducto(req.usuario.id, idp)
+  res.json({ success: true, message: "Producto eliminado del carrito" })
 }
 
 
 
 module.exports = {
-  AgregarCarro,
-  SumarCarro,
-  RestarCarro,
-  RenderCarritoTotal,
-  RenderCheckout,
-  sacarCarrito,
-  ActualizarContadorCarrito
+  agregar,
+  sumar,
+  restar,
+  obtener,
+  eliminar
 }

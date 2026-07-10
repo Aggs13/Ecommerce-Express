@@ -1,17 +1,18 @@
 const express = require("express")
 const router = express.Router()
 const carritoController = require("../controller/CarritoController")
+const { authenticateToken } = require("../middleware/authMiddleware");
 
+router.use(authenticateToken) // Middleware para autenticar el token antes de las rutas del carrito
 
-// GET
-router.get("/Carrito", carritoController.RenderCarritoTotal)
-router.get("/Checkout", carritoController.RenderCheckout)
+router.get("/", carritoController.obtener)
 
+router.post("/productos/:id",carritoController.agregar)
 
-// POST 
-router.post("/agregar-carrito/:id", carritoController.AgregarCarro)
-router.post("/sacar-carrito/:id",carritoController.sacarCarrito)
-router.post("/sumar-carrito/:id", carritoController.SumarCarro)
-router.post("/restar-carrito/:id", carritoController.RestarCarro)
+router.delete("/productos/:id", carritoController.eliminar)
+
+router.patch("/productos/:id/sumar", carritoController.sumar)
+
+router.patch("/productos/:id/restar", carritoController.restar)
 
 module.exports = router

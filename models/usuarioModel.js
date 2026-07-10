@@ -51,10 +51,23 @@ async function  VerificarRegistro(email) {
     })
   })
 
-
 }
+
+async function verificarEmail(email){
+  return new Promise((resolve, reject)=> {
+    const query = "SELECT * FROM usuarios WHERE email = ?"
+    db.get(query,[email],(err,row)=> {
+      if(err) return reject(err)
+        resolve(row || null)
+      
+    })
+  })
+}
+
+
 
 module.exports = {
   agregarUsuario,
-  VerificarInicio
+  VerificarInicio,
+  verificarEmail,
 }

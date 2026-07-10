@@ -1,53 +1,25 @@
-const express = require("express")
-const path = require("path")
-const session = require("express-session")
-const expressLayouts = require("express-ejs-layouts")
+require("dotenv").config()
 
-const productosRoute = require("./routes/productRoute")
-const carritoRoute = require("./routes/carritoRoute")
-const usuarioRoute = require("./routes/usuarioRoute")
-const carritoController = require("./controller/CarritoController")
+const express = require("express")
+const cors = require("cors")
 
 const app = express()
 
-app.set("view engine", "ejs")
-app.set("views", path.join(__dirname, "views"))
-app.use(expressLayouts)
-app.set("layout", "layouts/main")
+// Middlewares generales
+app.use(cors({ origin: "http://localhost:5173", credentials: true }))
+app.use(express.json())
 
-app.use(express.static(path.join(__dirname, "public")))
-app.use(express.urlencoded({ extended: true }))
-app.use(session({
-  secret: "ecommerceExpressWeb1",
-  resave: false,
-  saveUninitialized: false
-}))
+// Montar rutas bajo /api
+app.use("/api/productos", require("./routes/productRoute"))
+app.use("/api/carrito", require("./routes/carritoRoute"))
+app.use("/api/usuarios", require("./routes/usuarioRoute"))
 
-app.use((req, res, next) => {
-  res.locals.usuario = req.session.usuario
-  next()
-})
-
-app.use(carritoController.ActualizarContadorCarrito)
-
-app.use(productosRoute)
-app.use(carritoRoute)
-app.use(usuarioRoute)
-
-app.use((req, res) => {
-  res.status(404).send("Error 404 - Pagina no encontrada")
-})
-
+// Middleware de errores global (devuelve JSON)
 app.use((err, req, res, next) => {
   console.error(err)
-
-  res.status(500).render("500", {
-    titulo: "Error 500",
-    page: "",
-    style: "/styles/Error.css"
-  })
+  res.status(500).json({ error: "Error interno del servidor" })
 })
 
 app.listen(3000, () => {
-  console.log("Servidor en http://localhost:3000/")
+  console.log("API en http://localhost:3000/")
 })
