@@ -26,6 +26,29 @@ async function listar(req,res){
 }
 
 
+async function producto(req,res) {
+  const verificarId = await normalizeId(req.params.id)
+
+  if(verificarId.error === "ID no valido"){
+    return res.status(400).json({success: false, error: "ID de producto invalido"})
+  }
+  if(verificarId.error === "404"){
+    return res.status(404).json({success: false, error: "Producto no encontrado"})
+  }
+
+  const respuesta = await producModel.getProducto(verificarId.id)
+  if(!respuesta){
+    return res.status(404).json({success: false, error: "Producto no encontrado"})
+  }
+
+  res.json({
+    success: true,
+    data: respuesta.producto,
+  })
+}
+
+
+
 async function detalle(req,res){
   const verificarId = await normalizeId(req.params.id)
 
@@ -55,5 +78,6 @@ async function detalle(req,res){
 
 module.exports = {
   listar,
+  producto,
   detalle,
 }
