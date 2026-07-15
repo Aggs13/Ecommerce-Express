@@ -69,6 +69,15 @@ async function detalle(req,res){
 
 
 
+async function Edit(req,res) {
+  const id = req.params.id
+  const producto = req.body
+
+  const respuesta = await producModel.EditProducto(id,producto)
+  if(!respuesta) return res.status(404).json({success: false, error: "No se pudo editar"})
+
+  res.json({success: true, mensaje : "Se edito el producto!"})
+}
 
 
 
@@ -80,4 +89,5 @@ module.exports = {
   listar,
   producto,
   detalle,
+  Edit,
 }

@@ -75,9 +75,29 @@ function filtrarCategoria(categoria){
   })
 }
 
+
+function EditProducto(id,p){
+  return new Promise((resolve,rejects) => {
+    const query = `UPDATE productos SET nombre = ?,  descripcion = ? , precio = ?, stock = ?, img = ? WHERE id = ?`
+    db.all(query,[p.nombre, p.descripcion, p.precio, p.stock, p.img, id], (err,rows) => {
+
+      if(err){
+
+        console.log(err)
+        return rejects(err)
+
+      }
+
+      resolve(rows)
+
+    })
+  })
+}
+
 module.exports = {
   ProductosInicio,
   getProducto,
   existeProducto,
-  filtrarCategoria
+  filtrarCategoria,
+  EditProducto
 }

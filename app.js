@@ -24,7 +24,7 @@ app.use("/api/usuarios", require("./routes/usuarioRoute"))
 // Middleware de errores global (devuelve JSON)
 app.use((err, req, res, next) => {
   console.error(err)
-  res.status(500).json({ error: "Error interno del servidor" })
+  res.status(500).json({ error: `Error interno del servidor ERROR: ${err}` })
 })
 
 app.listen(3000, () => {
