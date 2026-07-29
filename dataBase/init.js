@@ -48,5 +48,11 @@ db.serialize(() => {
           id_order_items INTEGER PRIMARY KEY NOT NULL
           )
       `)
+    db.run(`
+      CREATE TABLE IF NOT EXISTS categorias (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL UNIQUE
+      )
+    `)
 })
 console.log("Tablas creadas")

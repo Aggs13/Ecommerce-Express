@@ -20,6 +20,7 @@ app.use(express.json())
 app.use("/api/productos", require("./routes/productRoute"))
 app.use("/api/carrito", require("./routes/carritoRoute"))
 app.use("/api/usuarios", require("./routes/usuarioRoute"))
+app.use("/api/categorias", require("./routes/categoriaRoute"))
 
 // Middleware de errores global (devuelve JSON)
 app.use((err, req, res, next) => {
