@@ -29,5 +29,16 @@ async function eliminar(req, res) {
     res.status(500).json({ success: false, error: err.message })
   }
 }
+async function editar(req, res) {
+  try {
+    const { id } = req.params
+    const { nombre } = req.body
+    if (!nombre) return res.status(400).json({ success: false, error: "Nombre requerido" })
+    const data = await categoriaModel.editar(id, nombre)
+    res.json({ success: true, data })
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message })
+  }
+}
 
-module.exports = { listar, crear, eliminar }
+module.exports = { listar, crear, eliminar, editar}

@@ -93,11 +93,32 @@ function EditProducto(id,p){
     })
   })
 }
+function CrearProducto(p) {
+  return new Promise((resolve, reject) => {
+    const query = `INSERT INTO productos (nombre, descripcion, precio, stock, categoria, img) VALUES (?, ?, ?, ?, ?, ?)`;
+    db.run(query, [p.nombre, p.descripcion, p.precio, p.stock, p.categoria, p.img], function (err) {
+      if (err) return reject(err);
+      resolve({ id: this.lastID });
+    });
+  });
+}
+
+function eliminarProducto(id) {
+  return new Promise((resolve, reject) => {
+    const query = "DELETE FROM productos WHERE id = ?";
+    db.run(query, [id], function (err) {
+      if (err) return reject(err);
+      resolve({ deleted: this.changes > 0 });
+    });
+  });
+}
 
 module.exports = {
   ProductosInicio,
   getProducto,
   existeProducto,
   filtrarCategoria,
-  EditProducto
+  EditProducto,
+  CrearProducto,
+  eliminarProducto
 }

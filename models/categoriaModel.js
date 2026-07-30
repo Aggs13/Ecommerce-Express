@@ -27,4 +27,13 @@ function eliminar(id) {
   })
 }
 
-module.exports = { listarTodas, crear, eliminar }
+function editar(id, nombre) {
+  return new Promise((resolve, reject) => {
+    db.run("UPDATE categorias SET nombre = ? WHERE id = ?", [nombre, id], function (err) {
+      if (err) return reject(err)
+      resolve({ id: Number(id), nombre })
+    })
+  })
+}
+
+module.exports = { listarTodas, crear, eliminar, editar}

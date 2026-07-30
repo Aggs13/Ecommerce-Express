@@ -82,12 +82,36 @@ async function Edit(req,res) {
 
 
 
+async function Crear(req, res) {
+  const { nombre, descripcion, precio, stock, categoria, img } = req.body;
+  if (!nombre || !descripcion || !precio || !stock || !categoria) {
+    return res.status(400).json({ success: false, error: "Faltan campos obligatorios" });
+  }
+  try {
+    const resultado = await producModel.CrearProducto({ nombre, descripcion, precio, stock, categoria, img });
+    res.status(201).json({ success: true, data: { id: resultado.id }, mensaje: "Producto creado" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: "Error al crear producto" });
+  }
+}
 
-
-
+async function eliminar(req, res) {
+  const { id } = req.params;
+  try {
+    const resultado = await producModel.eliminarProducto(id);
+    if (!resultado.deleted) {
+      return res.status(404).json({ success: false, error: "Producto no encontrado" });
+    }
+    res.json({ success: true, mensaje: "Producto eliminado" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: "Error al eliminar producto" });
+  }
+}
 module.exports = {
   listar,
   producto,
   detalle,
   Edit,
+  Crear,
+  eliminar
 }
