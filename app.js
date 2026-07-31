@@ -18,6 +18,8 @@ app.use(express.json())
 
 // Montar rutas bajo /api
 app.use("/api/productos", require("./routes/productRoute"))
+//Ruta nueva
+app.use("/api/products", require("./routes/api/productsApiRoutes"))
 app.use("/api/carrito", require("./routes/carritoRoute"))
 app.use("/api/usuarios", require("./routes/usuarioRoute"))
 app.use("/api/categorias", require("./routes/categoriaRoute"))
