@@ -2,6 +2,7 @@ require("dotenv").config()
 
 const express = require("express")
 const cors = require("cors")
+const CategoriasApiRoutes = require ("./routes/ApiRoutes/CategoriasApiRoutes")
 
 const app = express()
 
@@ -22,7 +23,7 @@ app.use("/api/productos", require("./routes/productRoute"))
 app.use("/api/products", require("./routes/api/productsApiRoutes"))
 app.use("/api/carrito", require("./routes/carritoRoute"))
 app.use("/api/usuarios", require("./routes/usuarioRoute"))
-app.use("/api/categorias", require("./routes/categoriaRoute"))
+app.use("/api/categorias",CategoriasApiRoutes)
 
 // Middleware de errores global (devuelve JSON)
 app.use((err, req, res, next) => {
