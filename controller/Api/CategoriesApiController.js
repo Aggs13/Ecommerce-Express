@@ -1,46 +1,44 @@
 const categoriesService = require("../../services/categoriesService")
-const { editar } = require("../categoriaController")
 
-const CategoriesApiController = {
-  list :  async(req,res) => {
+const categoriesApiController = {
+  list: async (req, res) => {
     const data = await categoriesService.getAll()
-    res.status(200).json({statusCode:200,data})
+    res.json(data)
   },
 
-  getById : async(req,res) => {
+  getById: async (req, res) => {
     const data = await categoriesService.getById(req.params.id)
-
-    if(data.length == 0) return res.status(200).json({statusCode:200,message:"No hay categorias"})
-    res.status(200).json({statusCode:200,data})
-
+    if (data.length === 0) {
+      return res.status(404).json({ error: "Categoria no encontrada" })
+    }
+    res.json(data)
   },
 
-  crear : async(req,res) => {
-    const {nombre} = req.body
+  crear: async (req, res) => {
+    const { nombre } = req.body
+    if (!nombre) {
+      return res.status(400).json({ error: "Falta el campo nombre" })
+    }
     const data = await categoriesService.create(nombre)
-    res.status(200).json({statusCode:200,message:"Se creo la categoria"})
+    res.status(201).json(data)
   },
 
-  eliminar : async(req,res) => {
-
-    const id = req.params.id
-    const data = await categoriesService.delete(id)
-
-    if(!data.eliminado) return res.status(404).json({statusCode:404,message:"No se pudo eliminar esa categoria"})
-    res.status(200).json({statusCode:200,message:"Categoria eliminada"})
-    
+  eliminar: async (req, res) => {
+    const data = await categoriesService.delete(req.params.id)
+    if (!data.eliminado) {
+      return res.status(404).json({ error: "No se pudo eliminar esa categoria" })
+    }
+    res.status(204).send()
   },
 
-  editar : async(req,res) => {
-    
-    const {nombre} = req.body
-    const id = req.params.id
-
-    const data = await categoriesService.update(id,nombre)
-    if(!data.changes) return res.status(404).json({statusCode:404,message:"No se encontro la categoria"})
-    res.status(200).json({statusCode:200,message:"Se edito correctamente!"})
+  editar: async (req, res) => {
+    const { nombre } = req.body
+    const data = await categoriesService.update(req.params.id, nombre)
+    if (!data.changes) {
+      return res.status(404).json({ error: "No se encontro la categoria" })
+    }
+    res.json({ mensaje: "Se edito correctamente!" })
   }
-
 }
 
-module.exports = CategoriesApiController
+module.exports = categoriesApiController

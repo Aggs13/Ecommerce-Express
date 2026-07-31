@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const productsApiController = require("../../controllers/api/productsApiController")
+const productsApiController = require("../../controller/Api/productsApiController")
 
 router.get("/", productsApiController.list)
 router.get("/:id", productsApiController.detail)
