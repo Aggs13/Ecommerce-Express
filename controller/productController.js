@@ -107,11 +107,40 @@ async function eliminar(req, res) {
     res.status(500).json({ success: false, error: "Error al eliminar producto" });
   }
 }
+
+async function create(req, res) {
+  const { nombre, descripcion, precio, stock, categoria, img, name, description, price, category, image } = req.body
+
+  const finalName = name || nombre
+  const finalPrice = price ?? precio
+
+  if (!finalName || finalPrice === undefined || finalPrice === null || finalPrice === "") {
+    return res.status(400).json({ success: false, error: "Nombre y precio son obligatorios" })
+  }
+
+  const producto = {
+    nombre: finalName,
+    descripcion: description || descripcion || "",
+    precio: Number(finalPrice),
+    stock: Number(stock) || 0,
+    categoria: category || categoria || "",
+    img: image || img || ""
+  }
+
+  try {
+    const result = await producModel.createProducto(producto)
+    res.status(201).json({ success: true, data: result, mensaje: "Producto creado" })
+  } catch (err) {
+    res.status(500).json({ success: false, error: "Error al crear el producto" })
+  }
+}
+
 module.exports = {
   listar,
   producto,
   detalle,
   Edit,
   Crear,
-  eliminar
+  eliminar,
+  create
 }

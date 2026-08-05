@@ -46,4 +46,13 @@ function editar(id, nombre) {
   })
 }
 
-module.exports = { listarTodas, crear, eliminar, editar,getById}
+function countAll() {
+  return new Promise((resolve, reject) => {
+    db.get("SELECT COUNT(*) AS total FROM categorias", [], (err, row) => {
+      if (err) return reject(err)
+      resolve(row.total)
+    })
+  })
+}
+
+module.exports = { listarTodas, crear, eliminar, editar, getById, countAll}

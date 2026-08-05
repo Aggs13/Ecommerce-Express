@@ -1,5 +1,5 @@
 // Funciones CRUD 
-const db = require("../database/db")
+const db = require("../dataBase/db")
 
 async function ProductosInicio(){
   return new Promise((resolve,rejects)=>{
@@ -93,6 +93,29 @@ function EditProducto(id,p){
     })
   })
 }
+
+function createProducto(producto){
+  return new Promise((resolve, rejects) => {
+    const query = `INSERT INTO productos (nombre, descripcion, categoria, precio, img, stock) VALUES (?, ?, ?, ?, ?, ?)`
+    db.run(query, [producto.nombre, producto.descripcion, producto.categoria, producto.precio, producto.img, producto.stock], function(err) {
+      if (err) {
+        console.log(err)
+        return rejects(err)
+      }
+      resolve({ id: this.lastID, ...producto })
+    })
+  })
+}
+
+function countAll() {
+  return new Promise((resolve, reject) => {
+    db.get("SELECT COUNT(*) AS total FROM productos", [], (err, row) => {
+      if (err) return reject(err)
+      resolve(row.total)
+    })
+  })
+}
+
 function CrearProducto(p) {
   return new Promise((resolve, reject) => {
     const query = `INSERT INTO productos (nombre, descripcion, precio, stock, categoria, img) VALUES (?, ?, ?, ?, ?, ?)`;
@@ -119,6 +142,8 @@ module.exports = {
   existeProducto,
   filtrarCategoria,
   EditProducto,
+  createProducto,
+  countAll,
   CrearProducto,
   eliminarProducto
 }
